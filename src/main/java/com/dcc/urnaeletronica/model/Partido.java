@@ -24,18 +24,12 @@ public class Partido {
     @Column(name = "NOME")
     protected String nome;
 
-    @Column(name = "NUMERO")
+	@Column(name = "NUMERO")
     protected Integer numero;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
     protected List<Candidato> candidatos;
-
-    public Partido(Long id, String nome, Integer numero) {
-        this.id = id;
-        this.nome = nome;
-        this.numero = numero;
-    }
 
     public Long getId() {
         return id;

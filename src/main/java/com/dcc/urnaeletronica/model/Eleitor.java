@@ -16,7 +16,7 @@ public class Eleitor extends Usuario {
     private Long id;
 
     @Column(name = "TITULO")
-    private Long titulo;
+    private Long tituloEleitor;
 
     @Column(name = "ZONA")
     private Integer zona;
@@ -27,12 +27,12 @@ public class Eleitor extends Usuario {
     @Column(name = "VOTOU")
     private Boolean votou;
 
-    public Long getTitulo() {
-        return titulo;
+    public Long getTituloEleitor() {
+        return tituloEleitor;
     }
 
-    public void setTitulo(Long titulo) {
-        this.titulo = titulo;
+    public void setTituloEleitor(Long tituloEleitor) {
+        this.tituloEleitor = tituloEleitor;
     }
 
     public Integer getZona() {

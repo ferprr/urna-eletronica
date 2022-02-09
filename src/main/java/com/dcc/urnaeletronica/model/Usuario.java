@@ -4,11 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 @MappedSuperclass
 public class Usuario {
 
     @Column(name = "NOME")
+    @NotBlank(message = "Campo obrigatório não preenchido!")
     protected String nome;
 
     @OneToOne
