@@ -2,37 +2,34 @@ package com.dcc.urnaeletronica.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ELEITOR")
-public class Eleitor extends Usuario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Eleitor extends Pessoa {
 
     @Column(name = "TITULO")
-    private Long titulo;
+    @NotNull(message = "Campo obrigatório não preenchido!")
+    private Long tituloEleitor;
 
     @Column(name = "ZONA")
+    @NotNull(message = "Campo obrigatório não preenchido!")
     private Integer zona;
 
     @Column(name = "SESSAO")
+    @NotNull(message = "Campo obrigatório não preenchido!")
     private Integer sessao;
     
     @Column(name = "VOTOU")
     private Boolean votou;
 
-    public Long getTitulo() {
-        return titulo;
+    public Long getTituloEleitor() {
+        return tituloEleitor;
     }
 
-    public void setTitulo(Long titulo) {
-        this.titulo = titulo;
+    public void setTituloEleitor(Long tituloEleitor) {
+        this.tituloEleitor = tituloEleitor;
     }
 
     public Integer getZona() {
@@ -58,4 +55,5 @@ public class Eleitor extends Usuario {
     public void setVotou(Boolean votou) {
         this.votou = votou;
     }
+    
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Painel administrativo</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+		<section class="section1" style="background-image: url(img/fundo-painel.jpg);">
+			<div class="sombra">
+			
+			</div>
+			<div class="center container-index">
+				<h1 class="texto-titulo-container-index">Painel administrativo</h1>
+				<div class="botoes">
+					<div class="wm">
+						<button class="botao" onclick="location.href='/pesqCandidato'" type="button">VER CANDIDATOS</button>
+					</div>
+					<div class="wm">
+						<button class="botao" onclick="location.href='/pesqEleitor'" type="button">VER ELEITORES</button>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</section>
+		<div th:replace="fragmentos/fragmentos :: rodape"></div>
+		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>

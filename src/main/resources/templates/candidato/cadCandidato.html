@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title th:unless="${telaEdicao}">Cadastrar candidato</title>
+		<title th:if="${telaEdicao}">Editar candidato</title>
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+	</head>
+	<body>
+		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+		<div class="container" style="margin-top: 50px">
+			<h4 th:unless="${telaEdicao}"><i class="fas fa-plus"></i> Cadastrar candidato</h4>
+			<h4 th:if="${telaEdicao}"><i class="fas fa-edit"></i> Editar candidato</h4>
+			<hr>
+			<br>
+			<form method="post" action="/salvarCandidato" th:object="${candidato}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{id}">
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="nome">Nome:</label>
+						<input class="form-control" placeholder="Ex.: João da Silva" th:field="*{nome}">
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('nome')}">
+							<label class="validation-message" th:errors="*{nome}"></label>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="numero">Número:</label>
+						<input class="form-control" placeholder="Ex.: 10" th:field="*{numero}">
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('numero')}">
+							<label class="validation-message" th:errors="*{numero}"></label>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="curso">Cargo:</label>
+						<select class="form-control" th:field="*{cargo}">
+							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
+							<option th:each="cargo : ${T(com.dcc.urnaeletronica.model.Cargo).values()}"
+									th:value="${cargo}" th:text="${cargo.descricao}">
+							</option>
+						</select>
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('cargo')}">
+							<label class="validation-message" th:errors="*{cargo}"></label>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="curso">Partido:</label>
+						<select class="form-control" th:field="*{partido}">
+							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
+							<option th:each="partido : ${partidos}"
+									th:value="${{partido}}" th:text="${partido.nome}">
+							</option>
+						</select>
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('partido')}">
+							<label class="validation-message" th:errors="*{partido}"></label>
+						</div>
+					</div>	
+				</div>
+				
+				<div class="row">
+					<button id="botao-salvar-candidato" type="submit" class="btn btn-success offset-md-5">SALVAR</button>
+					&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-outline-danger" th:href="@{/painel}">VOLTAR</a>
+				</div>
+			</form>
+		</div>
+		<br>
+		<br>
+		<div th:replace="fragmentos/fragmentos :: rodape"></div>
+		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>
