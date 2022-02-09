@@ -55,4 +55,13 @@ public class Estado {
         this.sigla = sigla;
     }
 
+	public List<Municipio> getMunicipios()
+	{
+		return municipios;
+	}
+
+	public void setMunicipios(List<Municipio> municipios)
+	{
+		this.municipios = municipios;
+	}
 }

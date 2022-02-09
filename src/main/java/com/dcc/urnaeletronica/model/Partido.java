@@ -19,13 +19,13 @@ public class Partido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
     @Column(name = "NOME")
-    protected String nome;
+    private String nome;
 
 	@Column(name = "NUMERO")
-    protected Integer numero;
+    private Integer numero;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
@@ -54,4 +54,14 @@ public class Partido {
     public void setNumero(Integer numero) {
         this.numero = numero;
     }
+
+	public List<Candidato> getCandidatos()
+	{
+		return candidatos;
+	}
+
+	public void setCandidatos(List<Candidato> candidatos)
+	{
+		this.candidatos = candidatos;
+	}
 }

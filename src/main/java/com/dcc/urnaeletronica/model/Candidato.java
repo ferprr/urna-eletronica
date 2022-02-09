@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "CANDIDATO")
-public class Candidato extends Usuario {
+public class Candidato extends Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

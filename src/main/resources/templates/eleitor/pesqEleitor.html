@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="author" content="Gilliard G. Rodrigues">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Lista de candidatos</title>
+		<title>Lista de eleitores</title>
 		<link rel="stylesheet" href="css/style.css">
 		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
 		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
@@ -13,33 +13,33 @@
 	<body>
 		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
 		<div class="container" style="margin-top: 50px;">
-			<h4><i class="fas fa-users"></i> Lista de candidatos</h4>
+			<h4><i class="fas fa-users"></i> Lista de eleitores</h4>
 			<hr>
 			<br>
-			<button class="btn btn-outline-secondary" onclick="location.href='/cadCandidato'" type="button">Cadastrar</button>
+			<button class="btn btn-outline-secondary" onclick="location.href='/cadEleitor'" type="button">Cadastrar</button>
 			<br>
 			<hr>
 			<table class="table table-bordered table-hover text-center table-responsive-md" >
 				<thead>
 					<th scope="col">Nome</th>
-					<th scope="col">Número</th>
-					<th scope="col">Cargo</th>
-					<th scope="col">Partido</th>
+					<th scope="col">Título de eleitor</th>
+					<th scope="col">Zona</th>
+					<th scope="col">Sessão</th>
 				</thead>
 				<tbody>
-					<tr scope="row" th:each="obj : ${candidatos}">
+					<tr scope="row" th:each="obj : ${eleitores}">
 						<td width="20%" th:text="${obj.nome}"></td>
-						<td width="20%" th:text="${obj.numero}"></td>
-						<td width="5%" th:text="${obj.cargo.descricao}"></td>
-						<td width="5%" th:text="${obj.partido.nome}"></td>
+						<td width="20%" th:text="${obj.tituloEleitor}"></td>
+						<td width="5%" th:text="${obj.zona}"></td>
+						<td width="5%" th:text="${obj.sessao}"></td>
 						<td width="30%">
-							<a class="btn btn-primary" th:href="@{cadCandidato/{id}(id=${obj.id})}"><i class="fas fa-edit"></i>Editar</a>
-							<a class="btn btn-danger" th:href="@{rmCandidato/{id}(id=${obj.id})}"><i class="fas fa-trash"></i>Remover</a>
+							<a class="btn btn-primary" th:href="@{cadEleitor/{id}(id=${obj.id})}"><i class="fas fa-edit"></i>Editar</a>
+							<a class="btn btn-danger" th:href="@{rmEleitor/{id}(id=${obj.id})}"><i class="fas fa-trash"></i>Remover</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<div th:if="${#lists.isEmpty(candidatos)}">
+			<div th:if="${#lists.isEmpty(eleitores)}">
 			  <p style="text-align: center;">Nenhum resultado foi encontrado.</p>
 			</div>
 		</div>
