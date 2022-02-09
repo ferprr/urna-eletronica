@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,10 @@ public class Municipio {
 
     @Column(name = "NOME")
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(name = "ESTADO_ID")
+    protected Estado estado;
 
     public Long getId() {
         return id;

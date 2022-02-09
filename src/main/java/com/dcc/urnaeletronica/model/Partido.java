@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,8 +28,7 @@ public class Partido {
     protected Integer numero;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CANDIDATO_ID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
     protected List<Candidato> candidatos;
 
     public Partido(Long id, String nome, Integer numero) {
