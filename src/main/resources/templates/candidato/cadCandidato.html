@@ -40,7 +40,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 form-group offset-md-3">
-						<label th:for="curso">Cargo:</label>
+						<label th:for="cargo">Cargo:</label>
 						<select class="form-control" th:field="*{cargo}">
 							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
 							<option th:each="cargo : ${T(com.dcc.urnaeletronica.model.Cargo).values()}"
@@ -54,7 +54,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6 form-group offset-md-3">
-						<label th:for="curso">Partido:</label>
+						<label th:for="partido">Partido:</label>
 						<select class="form-control" th:field="*{partido}">
 							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
 							<option th:each="partido : ${partidos}"
@@ -66,17 +66,29 @@
 						</div>
 					</div>	
 				</div>
-				
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="estado">Estado:</label>
+						<select class="form-control" th:field="*{estado}">
+							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
+							<option th:each="estado : ${estados}"
+									th:value="${{estado}}" th:text="${estado.nome}">
+							</option>
+						</select>
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('estado')}">
+							<label class="validation-message" th:errors="*{estado}"></label>
+						</div>
+					</div>	
+				</div>
 				<div class="row">
 					<button id="botao-salvar-candidato" type="submit" class="btn btn-success offset-md-5">SALVAR</button>
 					&nbsp;&nbsp;&nbsp;
-					<a class="btn btn-outline-danger" th:href="@{/painel}">VOLTAR</a>
+					<a class="btn btn-outline-danger" th:href="@{/pesqCandidato}">VOLTAR</a>
 				</div>
 			</form>
 		</div>
 		<br>
 		<br>
-		<div th:replace="fragmentos/fragmentos :: rodape"></div>
 		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</body>

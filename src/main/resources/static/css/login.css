@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+.loginForm {
+	min-height: 800px;
+	background-image: url('/img/wallpaper-bg-body.jpg');
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+
+}
+.loginForm {
+	display: flex;
+	align-items: center;
+	flex-flow: row wrap;
+	justify-content: center;
+	text-align: center;
+}
+.main-div {
+	background: #ffffff;
+	border-radius: 5px;
+	margin: 0 auto;
+	max-width: 50%;
+	padding: 50px 70px;
+}
+.form-control {
+	background: #f7f7f7 !important; 
+	border-radius: 7px !important;
+	font-size: 15px !important;
+	height: 50px !important;
+	line-height: 50px !important;
+	border: 2px solid #d4d4d4 !important;
+}
+.form-group {
+	margin: 10px !important;
+}
+.btn.btn-primary {
+	background: #512DA8;
+	border-color: #d4d4d4;
+	font-size: 1.1em;
+	padding: 0;
+	height: 50px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.btn.btn-info {
+	background: #7E57C2;
+	border-color: #d4d4d4;
+	font-size: 1em;
+	padding: 0;
+	height: 40px;
+	width: 50%;
+}

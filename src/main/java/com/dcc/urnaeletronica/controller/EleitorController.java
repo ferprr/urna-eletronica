@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dcc.urnaeletronica.dao.DaoEleitor;
+import com.dcc.urnaeletronica.dao.DaoEstado;
 import com.dcc.urnaeletronica.model.Eleitor;
 
 
@@ -22,6 +23,9 @@ public class EleitorController
 	@Autowired 
 	private DaoEleitor repositorio;
 	
+	@Autowired
+	private DaoEstado repositorioEstado;
+	
 	@GetMapping("/cadEleitor") 
 	public ModelAndView retornaViewCadEleitor(Eleitor eleitor)
 	{
@@ -29,6 +33,7 @@ public class EleitorController
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleitor/cadEleitor");
 		mv.addObject("eleitor", new Eleitor());
+		mv.addObject("estados", repositorioEstado.findAll());
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}

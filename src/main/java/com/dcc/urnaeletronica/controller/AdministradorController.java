@@ -12,22 +12,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dcc.urnaeletronica.dao.DaoAdministrador;
+import com.dcc.urnaeletronica.exceptions.AdministradorServiceException;
 import com.dcc.urnaeletronica.model.Administrador;
+import com.dcc.urnaeletronica.service.AdministradorService;
 import com.dcc.urnaeletronica.util.Util;
 
 @Controller
 public class AdministradorController
 {
 	@Autowired
-	private DaoAdministrador repositorio;
+	private AdministradorService service;
 	
 	@GetMapping("/")
 	public ModelAndView telaLogin()
 	{
+		//Boolean checkedAdmin = false;
+		//Boolean checkedUser = false;
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("login/login");
-		//mv.addObject("usuario", new Administrador());
+		mv.setViewName("/login");
+		//mv.addObject("checkedAdmin", checkedAdmin);
+		//mv.addObject("checkedUser", checkedUser);
+		mv.addObject("usuario", new Administrador());
 		return mv;
 	}
 	
@@ -40,18 +45,18 @@ public class AdministradorController
 	}
 	
 	@PostMapping("efetuarLogin")
-	public ModelAndView login(@Valid Administrador administrador, BindingResult br, HttpSession session) throws NoSuchAlgorithmException
+	public ModelAndView login(@Valid Administrador usuario, BindingResult br, HttpSession session) throws NoSuchAlgorithmException, AdministradorServiceException
 	{
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("usuario", new Administrador());
 		if(br.hasErrors())
 		{
-			mv.setViewName("login/login");
+			mv.setViewName("/login");
 		}
-		Administrador usuarioEncontrado = repositorio.findBySenha(Util.criptografarSenha(administrador.getSenha()));
+		Administrador usuarioEncontrado = service.autenticar(usuario.getUsername(), Util.criptografarSenha(usuario.getSenha()));
 		if(usuarioEncontrado == null)
 		{
-			mv.addObject("msg", "Usuário não encontrado! Tente novamente.");
+			mv.addObject("msg", "Administrador	 não encontrado! Tente novamente.");
 		}
 		else
 		{
