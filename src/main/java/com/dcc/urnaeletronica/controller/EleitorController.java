@@ -1,5 +1,8 @@
 package com.dcc.urnaeletronica.controller;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dcc.urnaeletronica.dao.DaoEleitor;
 import com.dcc.urnaeletronica.dao.DaoEstado;
+import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Eleitor;
+import com.dcc.urnaeletronica.service.EleitorService;
 
 
 @Controller
@@ -25,6 +30,56 @@ public class EleitorController
 	
 	@Autowired
 	private DaoEstado repositorioEstado;
+	
+	@Autowired
+	private EleitorService service;
+	
+	@GetMapping("/")
+	public ModelAndView telaLogin()
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/login");
+		mv.addObject("usuario", new Eleitor());
+		return mv;
+	}
+	
+	@GetMapping("/painelEleitor")
+	public ModelAndView painelEleitor() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("eleitor/painelEleitor");
+		mv.addObject("homeEleitor", true);
+		mv.addObject("home", false);
+		return mv;
+	}
+	
+	@PostMapping("efetuarLogin")
+	public ModelAndView login(@Valid Eleitor usuario, BindingResult br, HttpSession session) throws NoSuchAlgorithmException, EleitorServiceException
+	{
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("usuario", new Eleitor());
+		if(br.hasErrors())
+		{
+			mv.setViewName("/login");
+		}
+		Eleitor usuarioEncontrado = service.autenticar(usuario.getTituloEleitor());
+		if(usuarioEncontrado == null)
+		{
+			mv.addObject("msg", "Eleitor não encontrado! Tente novamente.");
+		}
+		else
+		{
+			session.setAttribute("usuarioLogado", usuarioEncontrado);
+			return painelEleitor();
+		}
+		return mv;
+	}
+	
+	@PostMapping("efetuarLogout")
+	public ModelAndView logout(HttpSession session)
+	{
+		session.invalidate();
+		return telaLogin();
+	}
 	
 	@GetMapping("/cadEleitor") 
 	public ModelAndView retornaViewCadEleitor(Eleitor eleitor)

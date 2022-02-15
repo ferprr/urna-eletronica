@@ -23,35 +23,32 @@ public class AdministradorController
 	@Autowired
 	private AdministradorService service;
 	
-	@GetMapping("/")
-	public ModelAndView telaLogin()
+	@GetMapping("/loginAdm")
+	public ModelAndView telaLoginAdm()
 	{
-		//Boolean checkedAdmin = false;
-		//Boolean checkedUser = false;
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/login");
-		//mv.addObject("checkedAdmin", checkedAdmin);
-		//mv.addObject("checkedUser", checkedUser);
+		mv.setViewName("/loginAdm");
 		mv.addObject("usuario", new Administrador());
 		return mv;
 	}
 	
 	@GetMapping("/painel")
-	public ModelAndView index() {
+	public ModelAndView painelAdm() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("admin/painel");
 		mv.addObject("home", true);
+		mv.addObject("homeEleitor", false);
 		return mv;
 	}
 	
-	@PostMapping("efetuarLogin")
+	@PostMapping("efetuarLoginAdm")
 	public ModelAndView login(@Valid Administrador usuario, BindingResult br, HttpSession session) throws NoSuchAlgorithmException, AdministradorServiceException
 	{
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("usuario", new Administrador());
 		if(br.hasErrors())
 		{
-			mv.setViewName("/login");
+			mv.setViewName("/loginAdm");
 		}
 		Administrador usuarioEncontrado = service.autenticar(usuario.getUsername(), Util.criptografarSenha(usuario.getSenha()));
 		if(usuarioEncontrado == null)
@@ -61,14 +58,8 @@ public class AdministradorController
 		else
 		{
 			session.setAttribute("usuarioLogado", usuarioEncontrado);
-			return index();
+			return painelAdm();
 		}
 		return mv;
-	}
-	@PostMapping("efetuarLogout")
-	public ModelAndView logout(HttpSession session)
-	{
-		session.invalidate();
-		return telaLogin();
 	}
 }

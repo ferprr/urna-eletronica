@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Área do eleitor</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+		<section class="section1" style="background-image: url(img/fundo-painel.jpg);">
+			<div class="sombra">
+			</div>
+			<div class="center container-index" style="margin-top: 0">
+				<h1 class="texto-titulo-container-index">Área do eleitor</h1>
+				<div class="container-painel-eleitor">
+					<h2><i class="fas fa-user"></i>Dados pessoais</h2>
+					<ul style="text-align: left; margin-top:40px">
+						<li>Nome: <span th:text="${session.usuarioLogado.nome}"></span></li>
+						<li>Título: <span th:text="${session.usuarioLogado.tituloEleitor}"></span></li>
+						<li>Zona: <span th:text="${session.usuarioLogado.zona}"></span></li>
+						<li>Sessão: <span th:text="${session.usuarioLogado.sessao}"></span></li>
+					</ul>
+					<div class="botoes">
+						<div style="text-align: center">
+							<form method="post" action="/votar" enctype="multipart/form-data">
+								<input type="hidden" id="titulo" name="titulo" th:value="${session.usuarioLogado.tituloEleitor}">
+								<button class="botao-votar" type="submit">VOTAR</button>
+							</form>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div th:replace="fragmentos/fragmentos :: rodape"></div>
+		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>

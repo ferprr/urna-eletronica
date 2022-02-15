@@ -15,21 +15,23 @@
 			<div class="container">
 				<div class="main-div">
 					<div class="texto-header">
-						<h2><img style="margin-bottom: 5px;" src="/img/logo.png" width="47px">Entrar</h2>
+						<h2><img style="margin-bottom: 5px;" src="/img/logo.png" width="47px">Administrador</h2>
 						<br>
 						<p>Insira suas credenciais para efetuar login no sistema:</p>
 					</div>
-					<form method="post" action="efetuarLogin" th:object="${usuario}">
+					<form method="post" action="efetuarLoginAdm" th:object="${usuario}">
 						<div class="alert alert-danger" role="alert" th:if="${msg}">
 							<strong th:text="${msg}"></strong>
 						</div>
 						<div>
 							<div class="form-group">
-								<input type="text" th:field="*{tituloEleitor}" class="form-control" placeholder="Título de eleitor" style="text-align: center">
+								<input type="text" th:field="*{username}"  class="form-control" placeholder="Seu usuário" style="text-align: center">
+							</div>
+							<div class="form-group">
+								<input type="password" th:field="*{senha}" class="form-control" placeholder="Sua senha" style="text-align: center">
 							</div>
 						</div>
 						<button type="submit" class="btn btn-primary">Login</button>
-						<a href="/loginAdm" style="text-align:center">Entrar como administrador</a>
 					</form>
 				</div>
 			</div>

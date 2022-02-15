@@ -10,20 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "CANDIDATO")
-public class Candidato {
+public class Candidato extends Pessoa {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(name = "NOME")
-    @NotBlank(message = "Campo obrigatório não preenchido!")
-    protected String nome;
 
 	@Column(name = "NUMERO")
 	@NotNull(message = "Campo obrigatório não preenchido!")
