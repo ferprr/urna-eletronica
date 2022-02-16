@@ -30,6 +30,15 @@ public class Eleicao {
     @JoinColumn(name = "ADM_ID")
     protected Administrador administrador;
 
+    public Eleicao() {
+    }
+
+    public Eleicao(Integer ano, Boolean ativa, Administrador administrador) {
+        this.ano = ano;
+        this.ativa = ativa;
+        this.administrador = administrador;
+    }
+
     public Long getId() {
         return id;
     }
