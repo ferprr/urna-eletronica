@@ -58,7 +58,7 @@ public class AdministradorServiceTest {
     @Test
     void testAutenticarNãoEncontraAdministrador() throws AdministradorServiceException {
         Exception exception = assertThrows(AdministradorServiceException.class, () -> {
-            administradorService.autenticar(anyString(), anyString());
+            this.administradorService.autenticar(anyString(), anyString());
         });
         
         assertEquals("Administrador não encontrado.", exception.getMessage());

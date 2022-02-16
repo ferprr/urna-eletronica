@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
 import com.dcc.urnaeletronica.model.Eleicao;
 import com.dcc.urnaeletronica.service.EleicaoService;
 
@@ -45,11 +46,14 @@ public class EleicaoController
 	}
 	
 	@GetMapping("/cadEleicao/{id}")
-	public ModelAndView retornaViewEditEleicao(@PathVariable("id") Long id)
+	public ModelAndView retornaViewEditEleicao(@PathVariable("id") Long id) throws EleicaoServiceException
 	{
 		setTelaEdicao(true);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/cadEleicao");
+
+		// TALVEZ ADICIONAR TRATAMENTO DE EXCEÇÃO?
+		
 		mv.addObject("eleicao", service.buscarPeloId(id));
 		mv.addObject("telaEdicao", isTelaEdicao());
 		mv.addObject("eleicaoAtiva", service.temEleicaoAtiva());
