@@ -41,6 +41,11 @@ public class EleicaoService
 		return eleicoes;
 	}
 
+	public List<Eleicao> buscarEleicoesFinalizadas()
+	{
+		return getDao().buscaEleicoesFinalizadas();
+	}
+	
 	public Eleicao buscarPeloId(Long id)
 	{
 		return getDao().getById(id);

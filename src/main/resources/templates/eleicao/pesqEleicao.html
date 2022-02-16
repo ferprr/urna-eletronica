@@ -27,7 +27,7 @@
 				<tbody>
 					<tr scope="row" th:each="obj : ${eleicoes}">
 						<td width="35%" th:text="${obj.ano}"></td>
-						<td width="35%" th:text="${obj.ativa ? 'Ativa' : 'Inativa'}"></td>
+						<td width="35%" th:text="${obj.ativa ? 'Ativa' : 'Finalizada'}"></td>
 						<td width="30%">
 							<a class="btn btn-primary" th:href="@{cadEleicao/{id}(id=${obj.id})}"><i class="fas fa-edit"></i>Editar</a>
 							<a class="btn btn-danger" th:href="@{rmEleicao/{id}(id=${obj.id})}"><i class="fas fa-trash"></i>Remover</a>

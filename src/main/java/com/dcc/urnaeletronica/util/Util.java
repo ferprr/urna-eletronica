@@ -12,5 +12,4 @@ public class Util
 		BigInteger hash = new BigInteger(1, msgDig.digest(senha.getBytes()));
 		return hash.toString(16);
 	}
-	
 }

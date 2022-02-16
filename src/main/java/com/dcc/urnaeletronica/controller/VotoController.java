@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dcc.urnaeletronica.dao.DaoCandidato;
 import com.dcc.urnaeletronica.model.Candidato;
+import com.dcc.urnaeletronica.service.CandidatoService;
 import com.dcc.urnaeletronica.service.EleicaoService;
 import com.dcc.urnaeletronica.service.EleitorService;
 import com.dcc.urnaeletronica.service.VotoService;
@@ -17,7 +17,7 @@ import com.dcc.urnaeletronica.service.VotoService;
 public class VotoController
 {
 	@Autowired
-	private DaoCandidato candidatoRepositorio;
+	private CandidatoService candidatoService;
 
 	@Autowired
 	private VotoService service;
@@ -54,7 +54,7 @@ public class VotoController
 	@PostMapping("/votar")
 	public ModelAndView votar(@RequestParam(value = "titulo") Long tituloEleitor)
 	{
-		if (eleitorService.verificaSeEleitorVotou(tituloEleitor))
+		if (getEleitorService().verificaSeEleitorVotou(tituloEleitor))
 		{
 			return telaVotoNegado();
 		}
@@ -78,11 +78,11 @@ public class VotoController
 	{
 		ModelAndView mv = new ModelAndView();
 		setVotoPrimeiroSenadorBranco(numPrimeiroSenador == null ? true : false);
-		setPrimeiroSenador(candidatoRepositorio.findByNumero(numPrimeiroSenador));
+		setPrimeiroSenador(getCandidatoService().buscarPeloNumero(numPrimeiroSenador));
 		setVotoSegundoSenadorBranco(numSegundoSenador == null ? true : false);
-		setSegundoSenador(candidatoRepositorio.findByNumero(numSegundoSenador));
+		setSegundoSenador(getCandidatoService().buscarPeloNumero(numSegundoSenador));
 		setVotoPresidenteBranco(numPresidente == null ? true : false);
-		setPresidente(candidatoRepositorio.findByNumero(numPresidente));
+		setPresidente(getCandidatoService().buscarPeloNumero(numPresidente));
 		mv.setViewName("voto/telaConfirmacao");
 		mv.addObject("primeiroSenador", getPrimeiroSenador());
 		mv.addObject("segundoSenador", getSegundoSenador());
@@ -97,8 +97,8 @@ public class VotoController
 		
 		try
 		{
-			service.atribuiVotos(eleicaoService.retornaEleicaoAtiva(), getPrimeiroSenador(), getSegundoSenador(), getPresidente(), isVotoPrimeiroSenadorBranco(), isVotoSegundoSenadorBranco(), isVotoPresidenteBranco());
-			eleitorService.marcaQueVotou(tituloEleitor);
+			getService().atribuiVotos(getEleicaoService().retornaEleicaoAtiva(), getPrimeiroSenador(), getSegundoSenador(), getPresidente(), isVotoPrimeiroSenadorBranco(), isVotoSegundoSenadorBranco(), isVotoPresidenteBranco());
+			getEleitorService().marcaQueVotou(tituloEleitor);
 		}
 		catch (Exception e)
 		{
@@ -166,6 +166,46 @@ public class VotoController
 	public void setVotoPresidenteBranco(boolean votoPresidenteBranco)
 	{
 		this.votoPresidenteBranco = votoPresidenteBranco;
+	}
+
+	public CandidatoService getCandidatoService()
+	{
+		return candidatoService;
+	}
+
+	public void setCandidatoService(CandidatoService candidatoService)
+	{
+		this.candidatoService = candidatoService;
+	}
+
+	public VotoService getService()
+	{
+		return service;
+	}
+
+	public void setService(VotoService service)
+	{
+		this.service = service;
+	}
+
+	public EleitorService getEleitorService()
+	{
+		return eleitorService;
+	}
+
+	public void setEleitorService(EleitorService eleitorService)
+	{
+		this.eleitorService = eleitorService;
+	}
+
+	public EleicaoService getEleicaoService()
+	{
+		return eleicaoService;
+	}
+
+	public void setEleicaoService(EleicaoService eleicaoService)
+	{
+		this.eleicaoService = eleicaoService;
 	}
 
 }
