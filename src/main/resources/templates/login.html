@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Urna eletrônica</title>
+		<link rel="stylesheet" href="css/login.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div class="loginForm">
+			<div class="container">
+				<div class="main-div">
+					<div class="texto-header">
+						<h2><img style="margin-bottom: 5px;" src="/img/logo.png" width="47px">Entrar</h2>
+						<br>
+						<p>Insira suas credenciais para efetuar login no sistema:</p>
+					</div>
+					<form method="post" action="efetuarLogin" th:object="${usuario}">
+						<div class="alert alert-danger" role="alert" th:if="${msg}">
+							<strong th:text="${msg}"></strong>
+						</div>
+						<div>
+							<div class="form-group">
+								<input type="text" th:field="*{tituloEleitor}" class="form-control" placeholder="Título de eleitor" style="text-align: center">
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Login</button>
+						<a href="/loginAdm" style="text-align:center">Entrar como administrador</a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

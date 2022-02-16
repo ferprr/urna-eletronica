@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title th:unless="${telaEdicao}">Cadastrar eleição</title>
+		<title th:if="${telaEdicao}">Editar eleição</title>
+		<link rel="stylesheet" href="/css/style.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+	</head>
+	<body>
+		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+		<div class="container" style="margin-top: 50px">
+			<h4 th:unless="${telaEdicao}"><i class="fas fa-plus"></i> Cadastrar eleição</h4>
+			<h4 th:if="${telaEdicao}"><i class="fas fa-edit"></i> Editar eleição</h4>
+			<hr>
+			<br>
+			<form method="post" action="/salvarEleicao" th:object="${eleicao}" enctype="multipart/form-data">
+				<input type="hidden" th:field="*{id}">
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="ano">Ano:</label>
+						<input class="form-control" placeholder="Ex.: 10" th:field="*{ano}">
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('ano')}">
+							<label class="validation-message" th:errors="*{ano}"></label>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="situacao">Situação:</label>
+						<div class="form-check form-switch">
+						  <input th:disabled="${eleicaoAtiva && !eleicao.ativa}" class="form-check-input" type="checkbox" id="switchSituacao" th:field="*{ativa}">
+						  <label class="form-check-label" for="switchSituacao">Eleição ativa</label>
+						</div>
+						<span th:if="${eleicaoAtiva && !eleicao.ativa}" style="color:red; font-size: 12px">Não é possível ativar duas eleições ao mesmo tempo!</span>
+					</div>	
+				</div>
+				<div class="row">
+					<button id="botao-salvar-eleicao" type="submit" class="btn btn-success offset-md-5">SALVAR</button>
+					&nbsp;&nbsp;&nbsp;
+					<a class="btn btn-outline-danger" th:href="@{/pesqEleicao}">VOLTAR</a>
+				</div>
+			</form>
+		</div>
+		<br>
+		<br>
+		<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>

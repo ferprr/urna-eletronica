@@ -30,8 +30,21 @@ public class Partido {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
     protected List<Candidato> candidatos;
+    
+    public Partido()
+	{
+		super();
+	}
 
-    public Long getId() {
+	public Partido(Long id, String nome, Integer numero)
+	{
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.numero = numero;
+	}
+
+	public Long getId() {
         return id;
     }
 

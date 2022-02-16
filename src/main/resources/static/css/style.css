@@ -68,13 +68,26 @@ a.botao-nav:hover {
 	color: #ffffff;
 	background-color: transparent;
 	border-radius: 10px;
-	border: 3px solid #a55eea;
+	border: 3px solid #227C9D;
+	padding: 20px;
+	font-weight: bold;
+}
+.botao-votar {
+	width: 280px;
+	color: #000000;
+	background-color: rgba(53, 86, 145, 0.5);
+	border-radius: 10px;
+	border: 3px solid #227C9D;
 	padding: 20px;
 	font-weight: bold;
 }
 .botao:hover {
-	color: #CE93D8;
+	color: #355691;
 	background-color: rgba(0,0,0,0.5);
+}
+.botao-votar:hover {
+	color: #fff;
+	background-color: rgba(53, 86, 145, 1);
 }
 .rodape {
 	color: #ffffff;
@@ -84,14 +97,16 @@ a.botao-nav:hover {
 	padding: 15px;
 }
 
-.botao-imagem-filtro {
-	border: none;
-}
-#footer-pesq-parent footer {
+.rodapeFixed .rodape{
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 }
+
+.botao-imagem-filtro {
+	border: none;
+}
+
 .foto {
 	max-height: 75px;
 	max-width: 75px;
@@ -99,6 +114,15 @@ a.botao-nav:hover {
 }
 td {
 	vertical-align:middle !important;
+}
+
+.container-painel-eleitor {
+	background: rgba(255, 255, 255, 0.75);
+	border-radius: 5px;
+	margin: 0 auto;
+	margin-top: 40px;
+	max-width: 50%;
+	padding: 50px 70px;
 }
 /* Responsividade */
 @media screen and (max-width: 667px){
@@ -112,9 +136,10 @@ td {
 		width: 100%;
 		margin-top: 7px;
 	}
-	#botao-salvar-aluno {
+	#botao-salvar-eleitor, #botao-salvar-eleicao, #botao-salvar-candidato {
 		margin-left: 15px;
 	}
+	
 	#cards {
 		display: flex;
 		flex-flow: row wrap;

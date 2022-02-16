@@ -6,5 +6,5 @@ import com.dcc.urnaeletronica.model.Administrador;
 
 public interface DaoAdministrador extends JpaRepository<Administrador, Long>
 {
-	public Administrador findBySenha(String senha);
+	public Administrador findByUsernameAndSenha(String username, String senha);
 }

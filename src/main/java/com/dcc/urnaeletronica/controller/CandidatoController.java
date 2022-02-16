@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dcc.urnaeletronica.dao.DaoCandidato;
+import com.dcc.urnaeletronica.dao.DaoEstado;
 import com.dcc.urnaeletronica.dao.DaoPartido;
 import com.dcc.urnaeletronica.model.Candidato;
 
@@ -26,6 +27,9 @@ public class CandidatoController
 	@Autowired
 	private DaoPartido repositorioPartido;
 	
+	@Autowired
+	private DaoEstado repositorioEstado;
+	
 	@GetMapping("/cadCandidato") 
 	public ModelAndView retornaViewCadCandidato(Candidato candidato)
 	{
@@ -34,6 +38,7 @@ public class CandidatoController
 		mv.setViewName("candidato/cadCandidato");
 		mv.addObject("candidato", new Candidato());
 		mv.addObject("partidos", repositorioPartido.findAll());
+		mv.addObject("estados", repositorioEstado.findAll());
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}

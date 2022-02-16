@@ -18,7 +18,7 @@
 			<h4 th:if="${telaEdicao}"><i class="fas fa-edit"></i> Editar eleitor</h4>
 			<hr>
 			<br>
-			<form method="post" action="/salvarCandidato" th:object="${eleitor}" enctype="multipart/form-data">
+			<form method="post" action="/salvarEleitor" th:object="${eleitor}" enctype="multipart/form-data">
 				<input type="hidden" th:field="*{id}">
 				<div class="row">
 					<div class="col-md-6 form-group offset-md-3">
@@ -57,15 +57,28 @@
 					</div>	
 				</div>
 				<div class="row">
+					<div class="col-md-6 form-group offset-md-3">
+						<label th:for="estado">Estado:</label>
+						<select class="form-control" th:field="*{estado}">
+							<option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
+							<option th:each="estado : ${estados}"
+									th:value="${{estado}}" th:text="${estado.nome}">
+							</option>
+						</select>
+						<div class="alert alert-danger mt-1" role="alert" th:if="${#fields.hasErrors('estado')}">
+							<label class="validation-message" th:errors="*{estado}"></label>
+						</div>
+					</div>	
+				</div>
+				<div class="row">
 					<button id="botao-salvar-eleitor" type="submit" class="btn btn-success offset-md-5">SALVAR</button>
 					&nbsp;&nbsp;&nbsp;
-					<a class="btn btn-outline-danger" th:href="@{/painel}">VOLTAR</a>
+					<a class="btn btn-outline-danger" th:href="@{/pesqEleitor}">VOLTAR</a>
 				</div>
 			</form>
 		</div>
 		<br>
 		<br>
-		<div th:replace="fragmentos/fragmentos :: rodape"></div>
 		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 	</body>
