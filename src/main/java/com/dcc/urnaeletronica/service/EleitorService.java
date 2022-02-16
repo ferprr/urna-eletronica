@@ -8,26 +8,38 @@ import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Eleitor;
 
 @Service
-public class EleitorService
-{
+public class EleitorService {
+
 	@Autowired
-	DaoEleitor repositorio;
-	
-	public Eleitor autenticar(Long titulo) throws EleitorServiceException
-	{
-		Eleitor usuarioEncontrado = repositorio.findByTituloEleitor(titulo);
-		return usuarioEncontrado;
+	private DaoEleitor daoEleitor;
+
+	public Eleitor autenticar(String titulo) throws EleitorServiceException {
+		return this.daoEleitor.findByTituloEleitor(titulo).orElseThrow(() -> new EleitorServiceException("Eleitor não encontrado."));
 	}
+
+	public void marcaQueVotou(String tituloDeEleitor) throws EleitorServiceException {
+
+		try {
+			Eleitor eleitor = this.autenticar(tituloDeEleitor);
+			eleitor.setVotou(true);
+			this.daoEleitor.save(eleitor);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	
-	public void marcaQueVotou(Long tituloDeEleitor)
-	{
-		Eleitor eleitor = repositorio.findByTituloEleitor(tituloDeEleitor);
-		eleitor.setVotou(true);
-		repositorio.save(eleitor);
 	}
-	public boolean verificaSeEleitorVotou(Long tituloDeEleitor)
-	{
-		Eleitor eleitor = repositorio.findByTituloEleitor(tituloDeEleitor);
-		return (eleitor.getVotou() ? true : false); 
+
+	public boolean verificaSeEleitorVotou(String tituloDeEleitor) throws EleitorServiceException {
+
+		boolean votou = false;
+
+		try {
+			Eleitor eleitor = this.autenticar(tituloDeEleitor);
+			votou = eleitor.getVotou();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return votou;
 	}
 }
