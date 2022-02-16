@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="Gilliard G. Rodrigues">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Resultados da eleição</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+		<script src="https://kit.fontawesome.com/006642858d.js"></script>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,600&family=Ubuntu&family=Work+Sans&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
+		<section class="section1" style="background-image: url(img/fundo-painel.jpg);">
+			<div class="sombra">
+			</div>
+			<div class="center container-index" style="margin-top: 0">
+				<h1 class="texto-titulo-container-index">Resultados</h1>
+				<div class="container-painel-eleitor">
+					<form method="post" action="/selecionarEleicao">
+						<div class="input-group">
+						  <select class="custom-select" name="eleicao" id="inputGroupSelect">
+						    <option th:value="${null}" th:text="${'Selecione uma opção...'}"></option>
+							<option th:each="eleicao : ${eleicoesFinalizadas}"
+									th:value="${{eleicao}}" th:text="${eleicao.ano}">
+							</option>
+						  </select>
+						  <div class="input-group-append">
+						    <button class="btn btn-outline-secondary" type="submit">Pesquisar</button>
+						  </div>
+						</div>
+					</form>
+					<hr>
+					<br>
+					<div th:if="${resultadoVisivel}">
+						<p th:unless="${alguemVotou}"> Não houve nenhum voto nessa eleição!</p>
+						<div th:if="${alguemVotou}">
+							<h3>Presidente:</h3>
+							<ul>
+								<li><span th:text="${presidente.nome}"></span></li>
+								<li>Partido: <span th:text="${presidente.partido.nome}"></span>
+								<li>Nº de votos: <span th:text="${numVotosPresidente}"></span></li>
+							</ul>
+							<h3>Senadores:</h3>
+							<ul>
+								<li><span th:text="${primeiroSenador.nome}"></span></li>
+								<li>Partido: <span th:text="${primeiroSenador.partido.nome}"></span>
+								<li>Nº de votos: <span th:text="${numVotosPrimeiroSenador}"></span></li>
+							</ul>
+							<ul>
+								<li><span th:text="${segundoSenador.nome}"></span></li>
+								<li>Partido: <span th:text="${segundoSenador.partido.nome}"></span>
+								<li>Nº de votos: <span th:text="${numVotosSegundoSenador}"></span></li>
+							</ul>
+							<p>Nº de votos brancos ou nulos: <span th:text="${numVotosBrancosOuNulos}"></span></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>

@@ -14,10 +14,9 @@
 		<div th:replace="fragmentos/fragmentos :: cabecalho"></div>
 		<section class="section1" style="background-image: url(img/fundo-painel.jpg);">
 			<div class="sombra">
-			
 			</div>
-			<div class="center container-index">
-				<h1 class="texto-titulo-container-index">Painel administrativo</h1>
+			<div class="center container-index" style="margin-top: 0">
+				<h1 class="texto-titulo-container-index" style="margin-bottom: 75px">Painel administrativo</h1>
 				<div class="botoes">
 					<div class="wm">
 						<button class="botao" onclick="location.href='/pesqCandidato'" type="button">VER CANDIDATOS</button>
@@ -30,6 +29,9 @@
 				<div class="botoes">
 					<div class="wm">
 						<button class="botao" onclick="location.href='/pesqEleicao'" type="button">VER ELEIÇÕES</button>
+					</div>
+					<div class="wm">
+						<button th:disabled="${!temEleicaoAtiva}" class="botao" onclick="location.href='/resultadosEleicao'" type="button">VER RESULTADOS</button>
 					</div>
 				</div>
 			</div>

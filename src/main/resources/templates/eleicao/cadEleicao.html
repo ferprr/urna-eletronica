@@ -20,6 +20,7 @@
 			<br>
 			<form method="post" action="/salvarEleicao" th:object="${eleicao}" enctype="multipart/form-data">
 				<input type="hidden" th:field="*{id}">
+				<input type="hidden" id="idAdmin" name="idAdmin" th:value="${session.usuarioLogado.id}">
 				<div class="row">
 					<div class="col-md-6 form-group offset-md-3">
 						<label th:for="ano">Ano:</label>

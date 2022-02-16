@@ -42,7 +42,7 @@ public class EleitorController
 	public ModelAndView telaLogin()
 	{
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/login");
+		mv.setViewName("/login/login");
 		mv.addObject("usuario", new Eleitor());
 		return mv;
 	}
@@ -51,8 +51,7 @@ public class EleitorController
 	public ModelAndView painelEleitor() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleitor/painelEleitor");
-		mv.addObject("homeEleitor", true);
-		mv.addObject("home", false);
+		mv.addObject("home", true);
 		mv.addObject("eleicaoAtiva", eleicaoService.temEleicaoAtiva());
 		return mv;
 	}
@@ -64,7 +63,7 @@ public class EleitorController
 		mv.addObject("usuario", new Eleitor());
 		if(br.hasErrors())
 		{
-			mv.setViewName("/login");
+			mv.setViewName("/login/login");
 		}
 		Eleitor usuarioEncontrado = service.autenticar(usuario.getTituloEleitor());
 		if(usuarioEncontrado == null)

@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dcc.urnaeletronica.exceptions.AdministradorServiceException;
 import com.dcc.urnaeletronica.model.Administrador;
 import com.dcc.urnaeletronica.service.AdministradorService;
+import com.dcc.urnaeletronica.service.EleicaoService;
 import com.dcc.urnaeletronica.util.Util;
 
 @Controller
@@ -23,21 +24,24 @@ public class AdministradorController
 	@Autowired
 	private AdministradorService service;
 	
+	@Autowired
+	private EleicaoService eleicaoService;
+	
 	@GetMapping("/loginAdm")
 	public ModelAndView telaLoginAdm()
 	{
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/loginAdm");
+		mv.setViewName("/login/loginAdm");
 		mv.addObject("usuario", new Administrador());
 		return mv;
 	}
 	
-	@GetMapping("/painel")
+	@GetMapping("/painelAdmin")
 	public ModelAndView painelAdm() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("admin/painel");
+		mv.setViewName("admin/painelAdmin");
+		mv.addObject("temEleicaoAtiva", getEleicaoService().temEleicaoAtiva());
 		mv.addObject("home", true);
-		mv.addObject("homeEleitor", false);
 		return mv;
 	}
 	
@@ -48,7 +52,7 @@ public class AdministradorController
 		mv.addObject("usuario", new Administrador());
 		if(br.hasErrors())
 		{
-			mv.setViewName("/loginAdm");
+			mv.setViewName("/login/loginAdm");
 		}
 		Administrador usuarioEncontrado = service.autenticar(usuario.getUsername(), Util.criptografarSenha(usuario.getSenha()));
 		if(usuarioEncontrado == null)
@@ -61,5 +65,15 @@ public class AdministradorController
 			return painelAdm();
 		}
 		return mv;
+	}
+
+	public EleicaoService getEleicaoService()
+	{
+		return eleicaoService;
+	}
+
+	public void setEleicaoService(EleicaoService eleicaoService)
+	{
+		this.eleicaoService = eleicaoService;
 	}
 }
