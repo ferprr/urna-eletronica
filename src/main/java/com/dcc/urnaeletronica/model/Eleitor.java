@@ -11,7 +11,7 @@ public class Eleitor extends Pessoa {
 
     @Column(name = "TITULO")
     @NotNull(message = "Campo obrigatório não preenchido!")
-    private Long tituloEleitor;
+    private String tituloEleitor;
 
     @Column(name = "ZONA")
     @NotNull(message = "Campo obrigatório não preenchido!")
@@ -24,11 +24,23 @@ public class Eleitor extends Pessoa {
     @Column(name = "VOTOU")
     private Boolean votou;
 
-    public Long getTituloEleitor() {
+    public Eleitor() {
+    }
+
+    public Eleitor(@NotNull(message = "Campo obrigatório não preenchido!") String tituloEleitor,
+            @NotNull(message = "Campo obrigatório não preenchido!") Integer zona,
+            @NotNull(message = "Campo obrigatório não preenchido!") Integer sessao, Boolean votou) {
+        this.tituloEleitor = tituloEleitor;
+        this.zona = zona;
+        this.sessao = sessao;
+        this.votou = votou;
+    }
+
+    public String getTituloEleitor() {
         return tituloEleitor;
     }
 
-    public void setTituloEleitor(Long tituloEleitor) {
+    public void setTituloEleitor(String tituloEleitor) {
         this.tituloEleitor = tituloEleitor;
     }
 
