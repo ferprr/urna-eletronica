@@ -33,9 +33,10 @@
 					<div class="col-md-6 form-group offset-md-3">
 						<label th:for="situacao">Situação:</label>
 						<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" id="switchSituacao" th:field="*{ativa}">
+						  <input th:disabled="${eleicaoAtiva && !eleicao.ativa}" class="form-check-input" type="checkbox" id="switchSituacao" th:field="*{ativa}">
 						  <label class="form-check-label" for="switchSituacao">Eleição ativa</label>
 						</div>
+						<span th:if="${eleicaoAtiva && !eleicao.ativa}" style="color:red; font-size: 12px">Não é possível ativar duas eleições ao mesmo tempo!</span>
 					</div>	
 				</div>
 				<div class="row">

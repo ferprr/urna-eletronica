@@ -16,7 +16,7 @@
 			<h4><i class="fas fa-users"></i> Eleições</h4>
 			<hr>
 			<br>
-			<button class="btn btn-outline-secondary" onclick="location.href='/cadEleicao'" type="button">Cadastrar</button>
+			<button th:disabled="${eleicaoAtiva}" class="btn btn-outline-secondary" onclick="location.href='/cadEleicao'" type="button">Cadastrar</button>
 			<br>
 			<hr>
 			<table class="table table-bordered table-hover text-center table-responsive-md" >

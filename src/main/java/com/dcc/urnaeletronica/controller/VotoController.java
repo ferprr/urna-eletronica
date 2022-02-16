@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dcc.urnaeletronica.dao.DaoCandidato;
 import com.dcc.urnaeletronica.model.Candidato;
+import com.dcc.urnaeletronica.service.EleicaoService;
 import com.dcc.urnaeletronica.service.EleitorService;
 import com.dcc.urnaeletronica.service.VotoService;
 
@@ -23,6 +24,9 @@ public class VotoController
 
 	@Autowired
 	private EleitorService eleitorService;
+	
+	@Autowired
+	private EleicaoService eleicaoService;
 
 	private Candidato primeiroSenador;
 	private Candidato segundoSenador;
@@ -90,9 +94,10 @@ public class VotoController
 	@PostMapping("/confirmarVotos")
 	public ModelAndView confirmarVotos(@RequestParam(value = "titulo") Long tituloEleitor)
 	{
+		
 		try
 		{
-			service.atribuiVotos(getPrimeiroSenador(), getSegundoSenador(), getPresidente(), isVotoPrimeiroSenadorBranco(), isVotoSegundoSenadorBranco(), isVotoPresidenteBranco());
+			service.atribuiVotos(eleicaoService.retornaEleicaoAtiva(), getPrimeiroSenador(), getSegundoSenador(), getPresidente(), isVotoPrimeiroSenadorBranco(), isVotoSegundoSenadorBranco(), isVotoPresidenteBranco());
 			eleitorService.marcaQueVotou(tituloEleitor);
 		}
 		catch (Exception e)

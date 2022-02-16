@@ -17,6 +17,7 @@ import com.dcc.urnaeletronica.dao.DaoEleitor;
 import com.dcc.urnaeletronica.dao.DaoEstado;
 import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Eleitor;
+import com.dcc.urnaeletronica.service.EleicaoService;
 import com.dcc.urnaeletronica.service.EleitorService;
 
 
@@ -34,6 +35,9 @@ public class EleitorController
 	@Autowired
 	private EleitorService service;
 	
+	@Autowired
+	private EleicaoService eleicaoService;
+	
 	@GetMapping("/")
 	public ModelAndView telaLogin()
 	{
@@ -49,6 +53,7 @@ public class EleitorController
 		mv.setViewName("eleitor/painelEleitor");
 		mv.addObject("homeEleitor", true);
 		mv.addObject("home", false);
+		mv.addObject("eleicaoAtiva", eleicaoService.temEleicaoAtiva());
 		return mv;
 	}
 	

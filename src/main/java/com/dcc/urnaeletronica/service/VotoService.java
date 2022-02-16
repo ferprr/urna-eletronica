@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.dcc.urnaeletronica.dao.DaoCandidato;
 import com.dcc.urnaeletronica.dao.DaoVoto;
 import com.dcc.urnaeletronica.model.Candidato;
+import com.dcc.urnaeletronica.model.Eleicao;
 import com.dcc.urnaeletronica.model.TipoVoto;
 import com.dcc.urnaeletronica.model.Voto;
 
@@ -21,8 +22,7 @@ public class VotoService
 	@Autowired
 	public DaoCandidato repositorioCandidato;
 
-	public void atribuiVotos(Candidato primeiroSenador, Candidato segundoSenador, Candidato presidente, boolean votoPrimeiroSenadorBranco,
-			boolean votoSegundoSenadorBranco, boolean votoPresidenteBranco)
+	public void atribuiVotos(Eleicao eleicaoAtiva, Candidato primeiroSenador, Candidato segundoSenador, Candidato presidente, boolean votoPrimeiroSenadorBranco,boolean votoSegundoSenadorBranco, boolean votoPresidenteBranco)
 	{
 		Voto primeiroVoto = new Voto();
 		if(votoPrimeiroSenadorBranco)
@@ -35,7 +35,7 @@ public class VotoService
 		primeiroVoto.setCandidato(primeiroSenador != null ? repositorioCandidato.findByNumero(primeiroSenador.getNumero()) : null);
 		primeiroVoto.setTipoVoto(primeiroSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
-		// primeiroVoto.setEleicao();
+		primeiroVoto.setEleicao(eleicaoAtiva);
 		Voto segundoVoto = new Voto();
 		if(votoSegundoSenadorBranco)
 		{
@@ -47,7 +47,7 @@ public class VotoService
 		segundoVoto.setCandidato(segundoSenador != null ? repositorioCandidato.findByNumero(segundoSenador.getNumero()) : null);
 		segundoVoto.setTipoVoto(segundoSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
-		// segundoVoto.setEleicao();
+		segundoVoto.setEleicao(eleicaoAtiva);
 		Voto terceiroVoto = new Voto();
 		if(votoPresidenteBranco)
 		{
@@ -59,7 +59,7 @@ public class VotoService
 			terceiroVoto.setCandidato(presidente != null ? repositorioCandidato.findByNumero(presidente.getNumero()) : null);
 			terceiroVoto.setTipoVoto(presidente != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
-		// terceiroVoto.setEleicao();
+		terceiroVoto.setEleicao(eleicaoAtiva);
 		repositorio.saveAll(Arrays.asList(primeiroVoto, segundoVoto, terceiroVoto));
 	}
 

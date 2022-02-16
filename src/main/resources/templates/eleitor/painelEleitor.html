@@ -29,8 +29,9 @@
 						<div style="text-align: center">
 							<form method="post" action="/votar" enctype="multipart/form-data">
 								<input type="hidden" id="titulo" name="titulo" th:value="${session.usuarioLogado.tituloEleitor}">
-								<button class="botao-votar" type="submit">VOTAR</button>
+								<button th:if="${eleicaoAtiva}" class="botao-votar" type="submit">VOTAR</button>
 							</form>
+							<span th:if=${!eleicaoAtiva} style="color: red">Não há nenhuma eleição ativa no momento.</span>
 						</div>
 						<div class="clear"></div>
 					</div>

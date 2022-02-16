@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dcc.urnaeletronica.dao.DaoEleicao;
 import com.dcc.urnaeletronica.model.Eleicao;
+import com.dcc.urnaeletronica.service.EleicaoService;
 
 @Controller
 public class EleicaoController
@@ -19,7 +19,8 @@ public class EleicaoController
 	private boolean telaEdicao;
 
 	@Autowired
-	private DaoEleicao repositorio;
+	private EleicaoService service;
+	
 	
 	@GetMapping("/cadEleicao") 
 	public ModelAndView retornaViewCadEleicao(Eleicao eleicao)
@@ -29,6 +30,7 @@ public class EleicaoController
 		mv.setViewName("eleicao/cadEleicao");
 		mv.addObject("eleicao", new Eleicao());
 		mv.addObject("telaEdicao", isTelaEdicao());
+		mv.addObject("eleicaoAtiva", service.temEleicaoAtiva());
 		return mv;
 	}
 	
@@ -37,7 +39,8 @@ public class EleicaoController
 	{
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/pesqEleicao");
-		mv.addObject("eleicoes", repositorio.findAll());
+		mv.addObject("eleicoes", service.buscarTodos());
+		mv.addObject("eleicaoAtiva", service.temEleicaoAtiva());
 		return mv;
 	}
 	
@@ -47,15 +50,16 @@ public class EleicaoController
 		setTelaEdicao(true);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/cadEleicao");
-		mv.addObject("eleicao", repositorio.getById(id));
+		mv.addObject("eleicao", service.buscarPeloId(id));
 		mv.addObject("telaEdicao", isTelaEdicao());
+		mv.addObject("eleicaoAtiva", service.temEleicaoAtiva());
 		return mv;
 	}
 	
 	@GetMapping("/rmEleicao/{id}")
 	public String retornaViewEleicaoRemovida(@PathVariable("id") Long id)
 	{
-		repositorio.deleteById(id);
+		service.remover(id);
 		return "redirect:/pesqEleicao";
 	}
 	
@@ -71,7 +75,7 @@ public class EleicaoController
 		else
 		{
 			mv.setViewName("redirect:/pesqEleicao");
-			repositorio.save(eleicao);
+			service.salvar(eleicao);
 		}
 		return mv;
 	}
