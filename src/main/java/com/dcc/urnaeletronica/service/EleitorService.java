@@ -10,57 +10,51 @@ import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Eleitor;
 
 @Service
-public class EleitorService
-{
+public class EleitorService {
+
 	@Autowired
-	private
-	DaoEleitor dao;
+	private DaoEleitor daoEleitor;
+
+	public Eleitor autenticar(String titulo) throws EleitorServiceException {
+		return this.daoEleitor.findByTituloEleitor(titulo).orElseThrow(() -> new EleitorServiceException("Eleitor não encontrado."));
 	
-	public Eleitor autenticar(Long titulo) throws EleitorServiceException
-	{
-		Eleitor usuarioEncontrado = getDao().findByTituloEleitor(titulo);
-		return usuarioEncontrado;
 	}
+
+	public void marcaQueVotou(String tituloDeEleitor) throws EleitorServiceException {
+
+		try {
+			Eleitor eleitor = this.autenticar(tituloDeEleitor);
+			eleitor.setVotou(true);
+			this.daoEleitor.save(eleitor);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	
-	public void marcaQueVotou(Long tituloDeEleitor)
-	{
-		Eleitor eleitor = getDao().findByTituloEleitor(tituloDeEleitor);
-		eleitor.setVotou(true);
-		getDao().save(eleitor);
 	}
-	public boolean verificaSeEleitorVotou(Long tituloDeEleitor)
-	{
-		Eleitor eleitor = getDao().findByTituloEleitor(tituloDeEleitor);
-		return eleitor.getVotou(); 
+
+	public boolean verificaSeEleitorVotou(String tituloDeEleitor) throws EleitorServiceException {
+
+		Eleitor eleitor = this.autenticar(tituloDeEleitor);
+		return eleitor.getVotou();
 	}
 	
 	public List<Eleitor> buscarTodos()
 	{
-		return getDao().findAll();
+		return daoEleitor.findAll();
 	}
 	
 	public Eleitor buscarPeloId(Long id)
 	{
-		return getDao().getById(id);
+		return this.daoEleitor.getById(id);
 	}
 
 	public void remover(Long id)
 	{
-		getDao().deleteById(id);
+		this.daoEleitor.deleteById(id);
 	}
 
 	public void salvar(Eleitor eleitor)
 	{
-		getDao().save(eleitor);
-	}
-	
-	public DaoEleitor getDao()
-	{
-		return dao;
-	}
-
-	public void setDao(DaoEleitor dao)
-	{
-		this.dao = dao;
+		this.daoEleitor.save(eleitor);
 	}
 }

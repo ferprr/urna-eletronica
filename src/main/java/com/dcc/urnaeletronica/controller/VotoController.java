@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Candidato;
 import com.dcc.urnaeletronica.service.CandidatoService;
 import com.dcc.urnaeletronica.service.EleicaoService;
@@ -52,9 +53,10 @@ public class VotoController
 	}
 
 	@PostMapping("/votar")
-	public ModelAndView votar(@RequestParam(value = "titulo") Long tituloEleitor)
+	public ModelAndView votar(@RequestParam(value = "titulo") String tituloEleitor) throws EleitorServiceException
 	{
-		if (getEleitorService().verificaSeEleitorVotou(tituloEleitor))
+
+		if (eleitorService.verificaSeEleitorVotou(tituloEleitor))
 		{
 			return telaVotoNegado();
 		}
@@ -92,7 +94,7 @@ public class VotoController
 	}
 
 	@PostMapping("/confirmarVotos")
-	public ModelAndView confirmarVotos(@RequestParam(value = "titulo") Long tituloEleitor)
+	public ModelAndView confirmarVotos(@RequestParam(value = "titulo") String tituloEleitor)
 	{
 		
 		try

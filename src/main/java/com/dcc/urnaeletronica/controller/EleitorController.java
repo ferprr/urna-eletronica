@@ -113,7 +113,8 @@ public class EleitorController
 		setTelaEdicao(true);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleitor/cadEleitor");
-		mv.addObject("eleitor", repositorio.getById(id));
+		mv.addObject("eleitor", repositorio.findById(id));
+		mv.addObject("estados", repositorioEstado.findAll());
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}

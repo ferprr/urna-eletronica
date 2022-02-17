@@ -34,7 +34,18 @@ public class Candidato extends Pessoa {
     @NotNull(message = "Campo obrigatório não preenchido!")
     protected Partido partido;
 
-    public Long getId()
+    public Candidato() {
+    }
+
+    public Candidato(@NotNull(message = "Campo obrigatório não preenchido!") Integer numero,
+			@NotNull(message = "Campo obrigatório não preenchido!") Cargo cargo,
+			@NotNull(message = "Campo obrigatório não preenchido!") Partido partido) {
+		this.numero = numero;
+		this.cargo = cargo;
+		this.partido = partido;
+	}
+
+	public Long getId()
 	{
 		return id;
 	}

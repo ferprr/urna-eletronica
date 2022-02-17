@@ -14,6 +14,14 @@ public class Administrador extends Pessoa {
 	@Column(name = "SENHA")
     private String senha;
 	
+	public Administrador() {
+	}
+
+	public Administrador(String username, String senha) {
+		this.username = username;
+		this.senha = senha;
+	}
+
 	public String getUsername()
 	{
 		return username;

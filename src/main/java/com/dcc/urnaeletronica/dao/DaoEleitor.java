@@ -1,10 +1,14 @@
 package com.dcc.urnaeletronica.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
 import com.dcc.urnaeletronica.model.Eleitor;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface DaoEleitor extends JpaRepository<Eleitor, Long>
 {
-	public Eleitor findByTituloEleitor(Long tituloEleitor);
+	public Optional<Eleitor> findByTituloEleitor(String tituloEleitor);
 }

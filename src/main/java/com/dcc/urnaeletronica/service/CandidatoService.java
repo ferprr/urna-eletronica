@@ -14,108 +14,78 @@ import com.dcc.urnaeletronica.model.Cargo;
 import com.dcc.urnaeletronica.model.Eleicao;
 
 @Service
-public class CandidatoService
-{
+public class CandidatoService {
 
 	@Autowired
-	private DaoCandidato dao;
+	private DaoCandidato candidatoDao;
 
 	@Autowired
 	private VotoService votoService;
 
-	public Candidato retornaPresidenteEleito(Eleicao eleicao)
-	{
-		if(!getVotoService().alguemVotou(eleicao.getId()))
-		{
+	public Candidato retornaPresidenteEleito(Eleicao eleicao) {
+		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new Candidato();
-		}
-		else
-		{
-		List<Candidato> candidatosParaPresidente = getDao().findAll().stream().filter(c -> c.getCargo().equals(Cargo.PRESIDENTE)).collect(Collectors.toList());
-		Candidato presidente = candidatosParaPresidente.get(0);
-		for (Candidato candidato : candidatosParaPresidente)
-		{
-			if (getVotoService().retornaNumVotosCandidato(candidato, eleicao) > getVotoService().retornaNumVotosCandidato(presidente, eleicao))
-			{
-				presidente = candidato;
+		} else {
+			List<Candidato> candidatosParaPresidente = this.candidatoDao.findAll().stream()
+					.filter(c -> c.getCargo().equals(Cargo.PRESIDENTE)).collect(Collectors.toList());
+			Candidato presidente = candidatosParaPresidente.get(0);
+			for (Candidato candidato : candidatosParaPresidente) {
+				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
+						.retornaNumVotosCandidato(presidente, eleicao)) {
+					presidente = candidato;
+				}
 			}
-		}
-		return presidente;
+			return presidente;
 		}
 	}
-	public List<Candidato> retornaSenadoresEleitos(Eleicao eleicao)
-	{
-		if(!getVotoService().alguemVotou(eleicao.getId()))
-		{
+
+	public List<Candidato> retornaSenadoresEleitos(Eleicao eleicao) {
+		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new ArrayList<Candidato>();
-		}
-		else
-		{
-			List<Candidato> candidatosParaSenador = getDao().findAll().stream().filter(c -> c.getCargo().equals(Cargo.SENADOR)).collect(Collectors.toList());
-			
+		} else {
+			List<Candidato> candidatosParaSenador = this.candidatoDao.findAll().stream()
+					.filter(c -> c.getCargo().equals(Cargo.SENADOR)).collect(Collectors.toList());
+
 			Candidato primeiroSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador)
-			{
-				if (getVotoService().retornaNumVotosCandidato(candidato, eleicao) > getVotoService().retornaNumVotosCandidato(primeiroSenador, eleicao))
-				{
+			for (Candidato candidato : candidatosParaSenador) {
+				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
+						.retornaNumVotosCandidato(primeiroSenador, eleicao)) {
 					primeiroSenador = candidato;
 				}
 			}
-			
+
 			int indicePrimeiroSenador = candidatosParaSenador.indexOf(primeiroSenador);
 			candidatosParaSenador.remove(indicePrimeiroSenador);
-			
+
 			Candidato segundoSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador)
-			{
-				if (getVotoService().retornaNumVotosCandidato(candidato, eleicao) > getVotoService().retornaNumVotosCandidato(segundoSenador, eleicao))
-				{
+			for (Candidato candidato : candidatosParaSenador) {
+				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
+						.retornaNumVotosCandidato(segundoSenador, eleicao)) {
 					segundoSenador = candidato;
 				}
 			}
 			return Arrays.asList(primeiroSenador, segundoSenador);
 		}
 	}
-	
-	public Candidato buscarPeloNumero(Integer numero)
-	{
-		return getDao().findByNumero(numero);
-	}
-	
-	public List<Candidato> buscarTodos()
-	{
-		return getDao().findAll();
-	}
-	
-	public Candidato buscarPeloId(Long id)
-	{
-		return getDao().getById(id);
+
+	public Candidato buscarPeloNumero(Integer numero) {
+		return this.candidatoDao.findByNumero(numero);
 	}
 
-	public void remover(Long id)
-	{
-		getDao().deleteById(id);
+	public List<Candidato> buscarTodos() {
+		return this.candidatoDao.findAll();
 	}
 
-	public void salvar(Candidato candidato)
-	{
-		getDao().save(candidato);
+	public Candidato buscarPeloId(Long id) {
+		return candidatoDao.getById(id);
 	}
-	public DaoCandidato getDao()
-	{
-		return dao;
+
+	public void remover(Long id) {
+		candidatoDao.deleteById(id);
 	}
-	public void setDao(DaoCandidato dao)
-	{
-		this.dao = dao;
-	}
-	public VotoService getVotoService()
-	{
-		return votoService;
-	}
-	public void setVotoService(VotoService votoService)
-	{
-		this.votoService = votoService;
+
+	public void salvar(Candidato candidato) {
+		this.candidatoDao.save(candidato);
 	}
 
 }

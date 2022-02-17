@@ -2,72 +2,55 @@ package com.dcc.urnaeletronica.service;
 
 import java.util.List;
 
+import com.dcc.urnaeletronica.dao.DaoEleicao;
+import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
+import com.dcc.urnaeletronica.model.Eleicao;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dcc.urnaeletronica.dao.DaoEleicao;
-import com.dcc.urnaeletronica.model.Eleicao;
-
 @Service
-public class EleicaoService
-{
-	@Autowired
-	private DaoEleicao dao;
+public class EleicaoService {
 
-	public boolean temEleicaoAtiva()
-	{
-		List<Eleicao> eleicoes = getDao().findAll();
-		if (!eleicoes.isEmpty())
-		{
-			for (Eleicao eleicao : eleicoes)
-			{
-				if (eleicao.getAtiva())
-				{
+	@Autowired
+	private DaoEleicao daoEleicao;
+
+	public boolean temEleicaoAtiva() {
+		List<Eleicao> eleicoes = this.daoEleicao.findAll();
+		if (!eleicoes.isEmpty()) {
+			for (Eleicao eleicao : eleicoes) {
+				if (eleicao.getAtiva()) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
-	public Eleicao retornaEleicaoAtiva() 
-	{
-		return getDao().buscaEleicaoAtiva();
+
+	public Eleicao retornaEleicaoAtiva() throws EleicaoServiceException {
+		return this.daoEleicao.buscaEleicaoAtiva().orElseThrow(() -> new EleicaoServiceException("Não há eleições ativas."));
+
 	}
-	
-	public List<Eleicao> buscarTodos()
-	{
-		List<Eleicao> eleicoes = getDao().findAll();
+
+	public List<Eleicao> buscarEleicoesFinalizadas() {
+		return this.daoEleicao.buscaEleicoesFinalizadas();
+	}
+
+	public List<Eleicao> buscarTodos() {
+		List<Eleicao> eleicoes = this.daoEleicao.findAll();
 		return eleicoes;
 	}
 
-	public List<Eleicao> buscarEleicoesFinalizadas()
-	{
-		return getDao().buscaEleicoesFinalizadas();
-	}
-	
-	public Eleicao buscarPeloId(Long id)
-	{
-		return getDao().getById(id);
+	public Eleicao buscarPeloId(Long id) throws EleicaoServiceException {
+		return this.daoEleicao.findById(id).orElseThrow(() -> new EleicaoServiceException("Eleição não encontrada."));
 	}
 
-	public void remover(Long id)
-	{
-		getDao().deleteById(id);
+	public void remover(Long id) {
+		this.daoEleicao.deleteById(id);
 	}
 
-	public void salvar(Eleicao eleicao)
-	{
-		getDao().save(eleicao);
+	public Eleicao salvar(Eleicao eleicao) {
+		return this.daoEleicao.save(eleicao);
 	}
 
-	public DaoEleicao getDao()
-	{
-		return dao;
-	}
-
-	public void setDao(DaoEleicao dao)
-	{
-		this.dao = dao;
-	}
 }

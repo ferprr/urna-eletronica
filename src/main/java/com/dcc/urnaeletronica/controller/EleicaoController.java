@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dcc.urnaeletronica.dao.DaoAdministrador;
+import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
 import com.dcc.urnaeletronica.model.Candidato;
 import com.dcc.urnaeletronica.model.Eleicao;
 import com.dcc.urnaeletronica.service.CandidatoService;
@@ -21,172 +22,124 @@ import com.dcc.urnaeletronica.service.EleicaoService;
 import com.dcc.urnaeletronica.service.VotoService;
 
 @Controller
-public class EleicaoController
-{
+public class EleicaoController {
 	private boolean telaEdicao;
 
 	@Autowired
-	private EleicaoService service;
-	
+	private EleicaoService eleicaoService;
+
 	@Autowired
 	private CandidatoService candidatoService;
-	
+
 	@Autowired
 	private VotoService votoService;
-	
+
 	@Autowired
 	private DaoAdministrador administradorDao;
-	
+
 	private boolean resultadoVisivel;
-	
+
 	@GetMapping("/resultadosEleicao")
-	public ModelAndView retornaViewResultados(Eleicao eleicao)
-	{
+	public ModelAndView retornaViewResultados(Eleicao eleicao) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/resultadosEleicao");
-		mv.addObject("eleicoesFinalizadas", getService().buscarEleicoesFinalizadas());
+		mv.addObject("eleicoesFinalizadas", this.eleicaoService.buscarEleicoesFinalizadas());
 		mv.addObject("resultadoVisivel", isResultadoVisivel());
 		mv.addObject("eleicao", eleicao);
-		if(eleicao != null)
-		{
-			Candidato presidente = getCandidatoService().retornaPresidenteEleito(eleicao);
-			List<Candidato> senadores = getCandidatoService().retornaSenadoresEleitos(eleicao);
+		if (eleicao != null) {
+			Candidato presidente = this.candidatoService.retornaPresidenteEleito(eleicao);
+			List<Candidato> senadores = this.candidatoService.retornaSenadoresEleitos(eleicao);
 			mv.addObject("presidente", presidente);
-			mv.addObject("numVotosPresidente", getVotoService().retornaNumVotosCandidato(presidente, eleicao));
+			mv.addObject("numVotosPresidente", this.votoService.retornaNumVotosCandidato(presidente, eleicao));
 			mv.addObject("primeiroSenador", senadores.isEmpty() ? new Candidato() : senadores.get(0));
-			mv.addObject("numVotosPrimeiroSenador", getVotoService().retornaNumVotosCandidato(senadores.isEmpty() ? new Candidato() : senadores.get(0), eleicao));
+			mv.addObject("numVotosPrimeiroSenador", this.votoService
+					.retornaNumVotosCandidato(senadores.isEmpty() ? new Candidato() : senadores.get(0), eleicao));
 			mv.addObject("segundoSenador", senadores.isEmpty() ? new Candidato() : senadores.get(1));
-			mv.addObject("numVotosSegundoSenador", getVotoService().retornaNumVotosCandidato(senadores.isEmpty() ? new Candidato() : senadores.get(1), eleicao));
-			mv.addObject("numVotosBrancosOuNulos", getVotoService().retornaNumVotosBrancosOuNulos(eleicao));
-			mv.addObject("alguemVotou", getVotoService().alguemVotou(eleicao.getId()));
+			mv.addObject("numVotosSegundoSenador", this.votoService
+					.retornaNumVotosCandidato(senadores.isEmpty() ? new Candidato() : senadores.get(1), eleicao));
+			mv.addObject("numVotosBrancosOuNulos", this.votoService.retornaNumVotosBrancosOuNulos(eleicao));
+			mv.addObject("alguemVotou", this.votoService.alguemVotou(eleicao.getId()));
 		}
-		
+
 		return mv;
 	}
-	
-	@GetMapping("/cadEleicao") 
-	public ModelAndView retornaViewCadEleicao(Eleicao eleicao)
-	{
+
+	@GetMapping("/cadEleicao")
+	public ModelAndView retornaViewCadEleicao(Eleicao eleicao) {
 		setTelaEdicao(false);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/cadEleicao");
 		mv.addObject("eleicao", new Eleicao());
 		mv.addObject("telaEdicao", isTelaEdicao());
-		mv.addObject("eleicaoAtiva", getService().temEleicaoAtiva());
+		mv.addObject("eleicaoAtiva", this.eleicaoService.temEleicaoAtiva());
 		return mv;
 	}
-	
+
 	@GetMapping("/pesqEleicao")
-	public ModelAndView retornaViewPesqEleicao()
-	{
+	public ModelAndView retornaViewPesqEleicao() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleicao/pesqEleicao");
-		mv.addObject("eleicoes", getService().buscarTodos());
-		mv.addObject("eleicaoAtiva", getService().temEleicaoAtiva());
+		mv.addObject("eleicoes", this.eleicaoService.buscarTodos());
+		mv.addObject("eleicaoAtiva", this.eleicaoService.temEleicaoAtiva());
 		return mv;
 	}
-	
+
 	@GetMapping("/cadEleicao/{id}")
-	public ModelAndView retornaViewEditEleicao(@PathVariable("id") Long id)
-	{
-		setTelaEdicao(true);
+	public ModelAndView retornaViewEditEleicao(@PathVariable("id") Long id) throws EleicaoServiceException {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("eleicao/cadEleicao");
-		mv.addObject("eleicao", getService().buscarPeloId(id));
-		mv.addObject("telaEdicao", isTelaEdicao());
-		mv.addObject("eleicaoAtiva", getService().temEleicaoAtiva());
+
+		try {
+			setTelaEdicao(true);
+			mv.setViewName("eleicao/cadEleicao");
+			mv.addObject("eleicao", this.eleicaoService.buscarPeloId(id));
+			mv.addObject("telaEdicao", isTelaEdicao());
+			mv.addObject("eleicaoAtiva", this.eleicaoService.temEleicaoAtiva());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return mv;
 	}
-	
+
 	@GetMapping("/rmEleicao/{id}")
-	public String retornaViewEleicaoRemovida(@PathVariable("id") Long id)
-	{
-		getService().remover(id);
+	public String retornaViewEleicaoRemovida(@PathVariable("id") Long id) {
+		this.eleicaoService.remover(id);
 		return "redirect:/pesqEleicao";
 	}
-	
+
 	@PostMapping("salvarEleicao")
-	public ModelAndView salvarEleicao(@Valid Eleicao eleicao, BindingResult br, Long idAdmin)
-	{
+	public ModelAndView salvarEleicao(@Valid Eleicao eleicao, BindingResult br, Long idAdmin) {
 		ModelAndView mv = new ModelAndView();
-		if(br.hasErrors())
-		{
+		if (br.hasErrors()) {
 			mv.setViewName("eleicao/cadEleicao");
 			mv.addObject("eleicao");
-		}
-		else
-		{
+		} else {
 			mv.setViewName("redirect:/pesqEleicao");
-			eleicao.setAdministrador(getAdministradorDao().getById(idAdmin));
-			getService().salvar(eleicao);
+			eleicao.setAdministrador(administradorDao.getById(idAdmin));
+			this.eleicaoService.salvar(eleicao);
 		}
 		return mv;
 	}
-	
+
 	@PostMapping("selecionarEleicao")
-	public ModelAndView selecionarEleicao(@RequestParam(value="eleicao", required=false) Eleicao eleicao)
-	{
+	public ModelAndView selecionarEleicao(@RequestParam(value = "eleicao", required = false) Eleicao eleicao) {
 		setResultadoVisivel(true);
 		return retornaViewResultados(eleicao);
 	}
-	
-	public boolean isTelaEdicao()
-	{
+
+	public boolean isTelaEdicao() {
 		return telaEdicao;
 	}
 
-	public void setTelaEdicao(boolean telaEdicao)
-	{
+	public void setTelaEdicao(boolean telaEdicao) {
 		this.telaEdicao = telaEdicao;
 	}
 
-	public boolean isResultadoVisivel()
-	{
+	public boolean isResultadoVisivel() {
 		return resultadoVisivel;
 	}
 
-	public void setResultadoVisivel(boolean resultadoVisivel)
-	{
+	public void setResultadoVisivel(boolean resultadoVisivel) {
 		this.resultadoVisivel = resultadoVisivel;
-	}
-
-	public EleicaoService getService()
-	{
-		return service;
-	}
-
-	public void setService(EleicaoService service)
-	{
-		this.service = service;
-	}
-
-	public CandidatoService getCandidatoService()
-	{
-		return candidatoService;
-	}
-
-	public void setCandidatoService(CandidatoService candidatoService)
-	{
-		this.candidatoService = candidatoService;
-	}
-
-	public VotoService getVotoService()
-	{
-		return votoService;
-	}
-
-	public void setVotoService(VotoService votoService)
-	{
-		this.votoService = votoService;
-	}
-
-	public DaoAdministrador getAdministradorDao()
-	{
-		return administradorDao;
-	}
-
-	public void setAdministradorDao(DaoAdministrador administradorDao)
-	{
-		this.administradorDao = administradorDao;
 	}
 }
