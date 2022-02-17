@@ -109,18 +109,18 @@ public class EleitorController
 	}
 	
 	@GetMapping("/cadEleitor/{id}")
-	public ModelAndView retornaViewEditEleitor(@PathVariable("id") Long id)
+	public ModelAndView retornaViewEditEleitor(@PathVariable("id") String id)
 	{
 		setTelaEdicao(true);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("eleitor/cadEleitor");
-		mv.addObject("eleitor", repositorio.getById(id));
+		mv.addObject("eleitor", repositorio.findById(id));
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}
 	
 	@GetMapping("/rmEleitor/{id}")
-	public String retornaViewEleitorRemovido(@PathVariable("id") Long id)
+	public String retornaViewEleitorRemovido(@PathVariable("id") String id)
 	{
 		repositorio.deleteById(id);
 		return "redirect:/pesqEleitor";
