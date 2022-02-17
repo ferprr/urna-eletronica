@@ -1,11 +1,13 @@
 package com.dcc.urnaeletronica.service;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dcc.urnaeletronica.dao.DaoCandidato;
+import com.dcc.urnaeletronica.dao.DaoEleicao;
 import com.dcc.urnaeletronica.dao.DaoVoto;
 import com.dcc.urnaeletronica.model.Candidato;
 import com.dcc.urnaeletronica.model.Eleicao;
@@ -16,15 +18,37 @@ import com.dcc.urnaeletronica.model.Voto;
 public class VotoService {
 
 	@Autowired
-	public DaoVoto repositorio;
+	public DaoVoto votoDao;
 
 	@Autowired
-	public DaoCandidato repositorioCandidato;
+	private DaoCandidato candidatoDao;
+
+	@Autowired
+	private DaoEleicao eleicaoDao;
+
+	public boolean alguemVotou(Long idEleicao) {
+		if (idEleicao != null) {
+			Eleicao eleicao = eleicaoDao.getById(idEleicao);
+			return !this.votoDao.findByEleicao(eleicao).isEmpty();
+		}
+		return false;
+	}
+
+	public Long retornaNumVotosBrancosOuNulos(Eleicao eleicao) {
+		return Long.valueOf(this.votoDao.findAll().stream().filter(v -> v.getEleicao().equals(eleicao))
+				.filter(v -> !v.getTipoVoto().equals(TipoVoto.VALIDO)).count());
+	}
+
+	public Long retornaNumVotosCandidato(Candidato candidato, Eleicao eleicao) {
+		return Long.valueOf(this.votoDao.findAll().stream().filter(v -> v.getEleicao().equals(eleicao))
+				.filter(v -> v.getTipoVoto().equals(TipoVoto.VALIDO))
+				.filter(v -> v.getCandidato().getCargo().equals(candidato.getCargo()))
+				.filter(v -> v.getCandidato().equals(candidato)).count());
+	}
 
 	public void atribuiVotos(Eleicao eleicaoAtiva, Candidato primeiroSenador, Candidato segundoSenador,
 			Candidato presidente, boolean votoPrimeiroSenadorBranco, boolean votoSegundoSenadorBranco,
 			boolean votoPresidenteBranco) {
-
 		Voto primeiroVoto = new Voto();
 
 		if (votoPrimeiroSenadorBranco) {
@@ -32,7 +56,7 @@ public class VotoService {
 			primeiroVoto.setTipoVoto(TipoVoto.BRANCO);
 		} else {
 			primeiroVoto.setCandidato(
-					primeiroSenador != null ? repositorioCandidato.findByNumero(primeiroSenador.getNumero()) : null);
+					primeiroSenador != null ? this.candidatoDao.findByNumero(primeiroSenador.getNumero()) : null);
 			primeiroVoto.setTipoVoto(primeiroSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
 
@@ -45,7 +69,7 @@ public class VotoService {
 			segundoVoto.setTipoVoto(TipoVoto.BRANCO);
 		} else {
 			segundoVoto.setCandidato(
-					segundoSenador != null ? repositorioCandidato.findByNumero(segundoSenador.getNumero()) : null);
+					segundoSenador != null ? this.candidatoDao.findByNumero(segundoSenador.getNumero()) : null);
 			segundoVoto.setTipoVoto(segundoSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
 
@@ -57,13 +81,28 @@ public class VotoService {
 			terceiroVoto.setCandidato(null);
 			terceiroVoto.setTipoVoto(TipoVoto.BRANCO);
 		} else {
-			terceiroVoto.setCandidato(
-					presidente != null ? repositorioCandidato.findByNumero(presidente.getNumero()) : null);
+			terceiroVoto
+					.setCandidato(presidente != null ? this.candidatoDao.findByNumero(presidente.getNumero()) : null);
 			terceiroVoto.setTipoVoto(presidente != null ? TipoVoto.VALIDO : TipoVoto.NULO);
 		}
 		terceiroVoto.setEleicao(eleicaoAtiva);
-		
-		repositorio.saveAll(Arrays.asList(primeiroVoto, segundoVoto, terceiroVoto));
+		this.votoDao.saveAll(Arrays.asList(primeiroVoto, segundoVoto, terceiroVoto));
+	}
+
+	public List<Voto> buscarTodos() {
+		return this.votoDao.findAll();
+	}
+
+	public Voto buscarPeloId(Long id) {
+		return this.votoDao.getById(id);
+	}
+
+	public void remover(Long id) {
+		this.votoDao.deleteById(id);
+	}
+
+	public void salvar(Voto voto) {
+		this.votoDao.save(voto);
 	}
 
 }

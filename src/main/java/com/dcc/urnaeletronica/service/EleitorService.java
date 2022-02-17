@@ -1,5 +1,7 @@
 package com.dcc.urnaeletronica.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class EleitorService {
 
 	public Eleitor autenticar(String titulo) throws EleitorServiceException {
 		return this.daoEleitor.findByTituloEleitor(titulo).orElseThrow(() -> new EleitorServiceException("Eleitor não encontrado."));
+	
 	}
 
 	public void marcaQueVotou(String tituloDeEleitor) throws EleitorServiceException {
@@ -31,15 +34,27 @@ public class EleitorService {
 
 	public boolean verificaSeEleitorVotou(String tituloDeEleitor) throws EleitorServiceException {
 
-		boolean votou = false;
+		Eleitor eleitor = this.autenticar(tituloDeEleitor);
+		return eleitor.getVotou();
+	}
+	
+	public List<Eleitor> buscarTodos()
+	{
+		return daoEleitor.findAll();
+	}
+	
+	public Eleitor buscarPeloId(String id)
+	{
+		return this.daoEleitor.getById(id);
+	}
 
-		try {
-			Eleitor eleitor = this.autenticar(tituloDeEleitor);
-			votou = eleitor.getVotou();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	public void remover(String id)
+	{
+		this.daoEleitor.deleteById(id);
+	}
 
-		return votou;
+	public void salvar(Eleitor eleitor)
+	{
+		this.daoEleitor.save(eleitor);
 	}
 }

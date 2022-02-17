@@ -29,6 +29,11 @@ public class EleicaoService {
 
 	public Eleicao retornaEleicaoAtiva() throws EleicaoServiceException {
 		return this.daoEleicao.buscaEleicaoAtiva().orElseThrow(() -> new EleicaoServiceException("Não há eleições ativas."));
+
+	}
+
+	public List<Eleicao> buscarEleicoesFinalizadas() {
+		return this.daoEleicao.buscaEleicoesFinalizadas();
 	}
 
 	public List<Eleicao> buscarTodos() {

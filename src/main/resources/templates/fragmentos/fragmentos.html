@@ -14,15 +14,15 @@
 		<!-- Cabeçalho -->
 		<header th:fragment="cabecalho">
 			<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5AA9E6">
-				<a class="navbar-brand" th:href="${home} ? @{/painel} : @{/painelEleitor}">
+				<a class="navbar-brand" th:href="${session.usuarioLogado.getClass().getSimpleName().equals('Administrador')} ? @{/painelAdmin} : @{/painelEleitor}">
 					<img src="/img/logo.png" width="75px"/>
 				</a>
-				<strong th:if="${homeEleitor}">Seja bem-vindo, <span th:text="${session.usuarioLogado.nome}"></span>!</strong>
+				<strong th:if="${home}">Seja bem-vindo, <span th:text="${session.usuarioLogado.nome}"></span>!</strong>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMobile">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div id="navMobile" class="navbar-collapse collapse justify-content-end">
-					<a class="botao-nav nav-item nav-link text-reset" th:href="${home} ? @{/painel} : @{/painelEleitor}"><i class="fas fa-home"></i> Home</a>
+					<a class="botao-nav nav-item nav-link text-reset" th:href="${session.usuarioLogado.getClass().getSimpleName().equals('Administrador')} ? @{/painelAdmin} : @{/painelEleitor}"><i class="fas fa-home"></i> Home</a>
 					<form action="efetuarLogout" method="post">
 						<button type="submit" class="nav-item nav-link btn-danger text-reset"><i class="fas fa-times"></i> Sair</button>
 					</form>

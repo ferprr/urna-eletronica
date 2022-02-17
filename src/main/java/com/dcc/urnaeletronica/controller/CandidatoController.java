@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dcc.urnaeletronica.dao.DaoCandidato;
 import com.dcc.urnaeletronica.dao.DaoEstado;
 import com.dcc.urnaeletronica.dao.DaoPartido;
 import com.dcc.urnaeletronica.model.Candidato;
+import com.dcc.urnaeletronica.service.CandidatoService;
 
 
 @Controller
@@ -22,13 +22,13 @@ public class CandidatoController
 	private boolean telaEdicao;
 	
 	@Autowired 
-	private DaoCandidato repositorio;
+	private CandidatoService service;
 	
 	@Autowired
-	private DaoPartido repositorioPartido;
+	private DaoPartido partidoDao;
 	
 	@Autowired
-	private DaoEstado repositorioEstado;
+	private DaoEstado estadoDao;
 	
 	@GetMapping("/cadCandidato") 
 	public ModelAndView retornaViewCadCandidato(Candidato candidato)
@@ -37,8 +37,8 @@ public class CandidatoController
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("candidato/cadCandidato");
 		mv.addObject("candidato", new Candidato());
-		mv.addObject("partidos", repositorioPartido.findAll());
-		mv.addObject("estados", repositorioEstado.findAll());
+		mv.addObject("partidos", getPartidoDao().findAll());
+		mv.addObject("estados", getPartidoDao().findAll());
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}
@@ -48,7 +48,7 @@ public class CandidatoController
 	{
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("candidato/pesqCandidato");
-		mv.addObject("candidatos", repositorio.findAll());
+		mv.addObject("candidatos", getService().buscarTodos());
 		mv.addObject("candidato", new Candidato());
 		return mv;
 	}
@@ -59,8 +59,8 @@ public class CandidatoController
 		setTelaEdicao(true);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("candidato/cadCandidato");
-		mv.addObject("candidato", repositorio.getById(id));
-		mv.addObject("partidos", repositorioPartido.findAll());
+		mv.addObject("candidato", getService().buscarPeloId(id));
+		mv.addObject("partidos", getPartidoDao().findAll());
 		mv.addObject("telaEdicao", isTelaEdicao());
 		return mv;
 	}
@@ -68,7 +68,7 @@ public class CandidatoController
 	@GetMapping("/rmCandidato/{id}")
 	public String retornaViewCandidatoRemovido(@PathVariable("id") Long id)
 	{
-		repositorio.deleteById(id);
+		getService().remover(id);
 		return "redirect:/pesqCandidato";
 	}
 	
@@ -84,7 +84,7 @@ public class CandidatoController
 		else
 		{
 			mv.setViewName("redirect:/pesqCandidato");
-			repositorio.save(candidato);
+			getService().salvar(candidato);
 		}
 		return mv;
 	}
@@ -97,5 +97,35 @@ public class CandidatoController
 	public void setTelaEdicao(boolean telaEdicao)
 	{
 		this.telaEdicao = telaEdicao;
+	}
+
+	public CandidatoService getService()
+	{
+		return service;
+	}
+
+	public void setService(CandidatoService service)
+	{
+		this.service = service;
+	}
+
+	public DaoPartido getPartidoDao()
+	{
+		return partidoDao;
+	}
+
+	public void setPartidoDao(DaoPartido partidoDao)
+	{
+		this.partidoDao = partidoDao;
+	}
+
+	public DaoEstado getEstadoDao()
+	{
+		return estadoDao;
+	}
+
+	public void setEstadoDao(DaoEstado estadoDao)
+	{
+		this.estadoDao = estadoDao;
 	}
 }
