@@ -1,0 +1,15 @@
+• Para subir a aplicação, primeiro importe o projeto no Eclipse como maven project, em seguida abra o arquivo "UrnaEletronicaApplication", clique com o botão direito do mouse e clique em Run As > Java Application.
+• Após isso, vá em localhost:8080/h2-console, clique em "Connect".
+• Na página que abrir, cole as consultas SQL disponíveis no arquivo "Scripts SQL" e clique em "Run" para popular inicialmente o banco.
+• Já existe um script para administrador, com as seguintes credenciais:
+login: gilliard
+senha: 12345678
+• Caso deseje criar seu próprio nome de usuário e senha de administrador, renomeie a linha 17 do arquivo UrnaEletronicaApplication para ver no console como ficará a senha que você escolher criptografada e use essa senha no INSERT  do banco de dados seguindo aquele modelo do arquivo "Scripts SQL".
+• Vá para localhost:8080 e clique em "Entrar como administrador", após carregar a página, insira as credenciais de administrador informadas acima (ou as suas próprias, caso tiver inserido no banco) e você será redirecionado para o painel administrativo.
+• No painel administrativo, clique em "ver eleições" para abrir a tela de pesquisa de eleições. Nela é possível cadastrar uma eleição caso não tenha nenhuma eleição ativa ou caso as eleições existentes estiverem finalizadas. É
+aqui que o administrador inicia e termina uma eleição, clicando em "editar" e marcando/desmarcando o checkbox.
+• Sinta-se livre para criar uma eleição, cadastrar candidatos e/ou eleitores.
+• Para entrar como um eleitor, basta usar um título de eleitor cadastrado na tela de login comum (localhost:8080/).
+• Entrando como eleitor, é possível votar, se você inserir os números dos candidatos existentes e prosseguir, na tela seguinte serão apresentados os dados desses candidatos e você poderá confirmar os votos. Para votar nulo, basta inserir um número de candidato que não existe e para votar em branco, basta não inserir nada no input e prosseguir.
+• Após votar, entre como um usuário administrador, vá em "ver eleições", edite a eleição ativa desmarcando o checkbox para finalizá-la. Após isso, você habilitará o botão "ver resultados" no painel administrativo, onde haverá um select menu que mostra apenas eleições finalizadas e, ao selecionar uma e clicar em "pesquisar", exibe os resultados!
+
