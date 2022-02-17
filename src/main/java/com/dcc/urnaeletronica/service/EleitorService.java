@@ -31,7 +31,7 @@ public class EleitorService
 	public boolean verificaSeEleitorVotou(Long tituloDeEleitor)
 	{
 		Eleitor eleitor = getDao().findByTituloEleitor(tituloDeEleitor);
-		return (eleitor.getVotou() ? true : false); 
+		return eleitor.getVotou(); 
 	}
 	
 	public List<Eleitor> buscarTodos()
