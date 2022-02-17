@@ -30,6 +30,7 @@ public class AutorizadorInterceptor implements HandlerInterceptor {
 					uri.contains("/telaVotoNegado") ||
 					uri.contains("/votar") ||
 					uri.contains("/telaVotacaoFinalizada") ||
+					uri.contains("/buscarResultados") ||
 					uri.contains("/confirmarVotos")) &&
 					!sessionAttribute.getClass().getSimpleName().equals("Eleitor")) {
 				response.sendRedirect("/");
@@ -46,7 +47,6 @@ public class AutorizadorInterceptor implements HandlerInterceptor {
 					uri.contains("/rmEleitor") ||
 					uri.contains("/rmCandidato") ||
 					uri.contains("/rmEleicao") ||
-					uri.contains("/buscarResultados") ||
 					uri.contains("/resultadosEleicao") ||
 					uri.contains("salvarEleitor") ||
 					uri.contains("salvarCandidato") ||

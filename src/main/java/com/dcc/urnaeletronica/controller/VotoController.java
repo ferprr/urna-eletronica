@@ -1,18 +1,18 @@
 package com.dcc.urnaeletronica.controller;
 
-import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
-import com.dcc.urnaeletronica.model.Candidato;
-import com.dcc.urnaeletronica.service.CandidatoService;
-import com.dcc.urnaeletronica.service.EleicaoService;
-import com.dcc.urnaeletronica.service.EleitorService;
-import com.dcc.urnaeletronica.service.VotoService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
+import com.dcc.urnaeletronica.model.Candidato;
+import com.dcc.urnaeletronica.service.CandidatoService;
+import com.dcc.urnaeletronica.service.EleicaoService;
+import com.dcc.urnaeletronica.service.EleitorService;
+import com.dcc.urnaeletronica.service.VotoService;
 
 @Controller
 public class VotoController

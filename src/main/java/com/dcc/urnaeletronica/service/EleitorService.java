@@ -43,12 +43,12 @@ public class EleitorService {
 		return daoEleitor.findAll();
 	}
 	
-	public Eleitor buscarPeloId(String id)
+	public Eleitor buscarPeloId(Long id)
 	{
 		return this.daoEleitor.getById(id);
 	}
 
-	public void remover(String id)
+	public void remover(Long id)
 	{
 		this.daoEleitor.deleteById(id);
 	}

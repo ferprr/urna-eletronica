@@ -22,7 +22,7 @@ public class Eleitor extends Pessoa {
     private Integer sessao;
     
     @Column(name = "VOTOU")
-    private Boolean votou;
+    private Boolean votou = false;
 
     public Eleitor() {
     }

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
 import com.dcc.urnaeletronica.dao.DaoAdministrador;
+import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
 import com.dcc.urnaeletronica.model.Candidato;
 import com.dcc.urnaeletronica.model.Eleicao;
 import com.dcc.urnaeletronica.service.CandidatoService;

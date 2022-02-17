@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DaoEleitor extends JpaRepository<Eleitor, String>
+public interface DaoEleitor extends JpaRepository<Eleitor, Long>
 {
 	public Optional<Eleitor> findByTituloEleitor(String tituloEleitor);
 }
