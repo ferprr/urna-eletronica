@@ -31,6 +31,11 @@ public class Partido {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
     protected List<Candidato> candidatos;
     
+    public Partido(String nome, Integer numero) {
+        this.nome = nome;
+        this.numero = numero;
+    }
+
     public Partido()
 	{
 		super();
