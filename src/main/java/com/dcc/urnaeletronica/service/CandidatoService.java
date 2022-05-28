@@ -26,17 +26,27 @@ public class CandidatoService {
 		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new Candidato();
 		} else {
-			List<Candidato> candidatosParaPresidente = this.candidatoDao.findAll().stream()
-					.filter(c -> c.getCargo().equals(Cargo.PRESIDENTE)).collect(Collectors.toList());
-			Candidato presidente = candidatosParaPresidente.get(0);
-			for (Candidato candidato : candidatosParaPresidente) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(presidente, eleicao)) {
-					presidente = candidato;
-				}
-			}
-			return presidente;
+			List<Candidato> candidatosParaPresidente = this.listarCandidatosPorCargo(Cargo.PRESIDENTE);
+
+			return this.calcularGanhadorEleicao(candidatosParaPresidente, eleicao);
 		}
+	}
+
+	public List<Candidato> listarCandidatosPorCargo(Cargo cargo) {
+		List<Candidato> candidatosPorCargo = this.buscarTodos().stream().filter(c -> c.getCargo().equals(cargo)).collect(Collectors.toList());
+
+		return candidatosPorCargo;
+	}
+	
+	private Candidato calcularGanhadorEleicao(List<Candidato> candidatos, Eleicao eleicao) {
+		Candidato candidatoGanhador = candidatos.get(0);
+		for (Candidato candidatoConcorrente : candidatos) {
+			if (this.votoService.retornaNumVotosCandidato(candidatoConcorrente, eleicao) > 
+				this.votoService.retornaNumVotosCandidato(candidatoGanhador, eleicao)) {
+				candidatoGanhador = candidatoConcorrente;
+			}
+		}
+		return candidatoGanhador;
 	}
 
 	public List<Candidato> retornaSenadoresEleitos(Eleicao eleicao) {
