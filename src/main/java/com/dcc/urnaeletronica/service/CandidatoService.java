@@ -53,27 +53,15 @@ public class CandidatoService {
 		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new ArrayList<Candidato>();
 		} else {
-			List<Candidato> candidatosParaSenador = this.candidatoDao.findAll().stream()
-					.filter(c -> c.getCargo().equals(Cargo.SENADOR)).collect(Collectors.toList());
+			List<Candidato> candidatosParaSenador = this.listarCandidatosPorCargo(Cargo.SENADOR);
 
-			Candidato primeiroSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(primeiroSenador, eleicao)) {
-					primeiroSenador = candidato;
-				}
-			}
+			Candidato primeiroSenador = this.calcularGanhadorEleicao(candidatosParaSenador, eleicao);
 
 			int indicePrimeiroSenador = candidatosParaSenador.indexOf(primeiroSenador);
 			candidatosParaSenador.remove(indicePrimeiroSenador);
 
-			Candidato segundoSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(segundoSenador, eleicao)) {
-					segundoSenador = candidato;
-				}
-			}
+			Candidato segundoSenador = this.calcularGanhadorEleicao(candidatosParaSenador, eleicao);
+
 			return Arrays.asList(primeiroSenador, segundoSenador);
 		}
 	}

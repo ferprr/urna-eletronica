@@ -91,4 +91,24 @@ public class CandidatoServiceTest {
 
 		verify(this.candidatoDao, times(1)).findAll();
 	}
+
+	@Test
+	void testRetornaSenadoresEleitos() {
+		when(this.candidatoDao.findAll()).thenReturn(candidatos);
+
+		when(this.votoService.alguemVotou(0l)).thenReturn(true);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(3), eleicao)).thenReturn(25l);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(4), eleicao)).thenReturn(12l);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(5), eleicao)).thenReturn(41l);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(6), eleicao)).thenReturn(17l);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(7), eleicao)).thenReturn(47l);
+		when(this.votoService.retornaNumVotosCandidato(candidatos.get(8), eleicao)).thenReturn(19l);
+
+		List<Candidato> senadoresEleitos = this.candidatoService.retornaSenadoresEleitos(eleicao);
+
+		assertEquals(555, senadoresEleitos.get(0).getNumero());
+		assertEquals(333, senadoresEleitos.get(1).getNumero());
+
+		verify(this.candidatoDao, times(1)).findAll();
+	}
 }
