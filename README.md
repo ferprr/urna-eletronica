@@ -9,7 +9,10 @@ O sistema desenvolvido consiste na implementação de uma urna eletrônica no qu
 O administrador consegue gerenciar a eleição com funções de início, término e visualização das métricas geradas após a votação. Não há um segundo turno e aquele candidato que for mais votado ganha.
 
 # Explicação das tecnologias utilizadas
-As tecnologias utilizadas no projeto foram[...]
+- _Java_ com o framework _Spring MVC_ e o template engine _Thymeleaf_
+- Banco de dados _H2_
+- Framework de testes _JUnit_
+- Arquitetura _Model-View-Controller_ (MVC)
 
 
 
