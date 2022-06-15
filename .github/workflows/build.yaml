@@ -25,3 +25,5 @@ jobs:
       - name: Test
         id: mvn-test
         run: mvn test
+      - name: jacoco-badge-generator
+        uses: cicirello/jacoco-badge-generator@v2.6.1
