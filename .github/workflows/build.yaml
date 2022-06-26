@@ -4,10 +4,11 @@ on: [push]
 
 jobs:
   build:
+    name: 'Build & Test & Generate JaCoCo Badge'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -17,7 +18,7 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots package
-      - name: Build with Maven
+      - name: Run Tests
         run: mvn -B test
       - name: Generate JaCoCo Badge
         id: jacoco
