@@ -60,8 +60,8 @@ public class CadastrarEleicaoIntegration {
 		when(this.daoAdministrador.findByUsernameAndSenha("user", "123")).thenReturn(Optional.of(this.administrador));
 		when(this.daoEleicao.save(any(Eleicao.class))).thenReturn(eleicao);
 		when(this.daoEleicao.buscaEleicaoAtiva()).thenReturn(Optional.empty());
-		
-		//Fazendo o login como um usuário administrador
+
+		// Fazendo o login como um usuário administrador
 		Administrador adm = null;
 
 		try {
@@ -70,22 +70,22 @@ public class CadastrarEleicaoIntegration {
 			assertEquals(1, 2);
 		}
 
-		//Verificando que não há nenhuma eleição ativa no momento
+		// Verificando que não há nenhuma eleição ativa no momento
 		EleicaoServiceException e = assertThrows(EleicaoServiceException.class, () -> {
 			eleicaoService.retornaEleicaoAtiva();
 		});
-		
+
 		assertEquals("Não há eleições ativas.", e.getMessage());
 	}
-	
+
 	@Test
 	public void cadastrarEleicaoIntegration() {
 		when(this.daoAdministrador.findByUsernameAndSenha(anyString(), anyString())).thenReturn(Optional.empty());
 		when(this.daoAdministrador.findByUsernameAndSenha("user", "123")).thenReturn(Optional.of(this.administrador));
 		when(this.daoEleicao.save(any(Eleicao.class))).thenReturn(eleicao);
 		when(this.daoEleicao.buscaEleicaoAtiva()).thenReturn(Optional.empty());
-		
-		//Fazendo o login como um usuário administrador
+
+		// Fazendo o login como um usuário administrador
 		Administrador adm = null;
 
 		try {
@@ -94,14 +94,15 @@ public class CadastrarEleicaoIntegration {
 			assertEquals(1, 2);
 		}
 
-		//Verificando que não há nenhuma eleição ativa no momento
+		// Verificando que não há nenhuma eleição ativa no momento
 		EleicaoServiceException e = assertThrows(EleicaoServiceException.class, () -> {
 			eleicaoService.retornaEleicaoAtiva();
 		});
-		
+
 		assertEquals("Não há eleições ativas.", e.getMessage());
 
-		//Cadastrando uma nova eleição e verificando que a eleição cadastrada foi salva com sucesso
+		// Cadastrando uma nova eleição e verificando que a eleição cadastrada foi salva
+		// com sucesso
 		Eleicao eleicaoResponse = this.eleicaoService.salvar(eleicao);
 		assertNotNull(eleicaoResponse);
 
@@ -112,17 +113,17 @@ public class CadastrarEleicaoIntegration {
 		assertEquals(1l, eleicaoResponse.getId());
 
 		verify(this.daoEleicao, times(1)).save(any(Eleicao.class));
-		
-		//Buscando a eleição recém cadastrada
+
+		// Buscando a eleição recém cadastrada
 		when(this.daoEleicao.buscaEleicaoAtiva()).thenReturn(Optional.of(eleicao));
 		Eleicao eAtiva = null;
 		try {
 			eAtiva = eleicaoService.retornaEleicaoAtiva();
-		} catch (EleicaoServiceException ex){
-			
+		} catch (EleicaoServiceException ex) {
+
 		}
-		
+
 		assertEquals(this.eleicao.getAno(), eAtiva.getAno());
 	}
-	
+
 }
