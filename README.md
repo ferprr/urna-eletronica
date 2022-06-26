@@ -1,4 +1,20 @@
-![Coverage](.github/badges/jacoco.svg)
+# Integrantes
+* Euller Saez Lage Silva
+* Fernanda Carolina da Silva Pereira
+* Gilliard Gabriel Rodrigues
+* Guilherme Barboza Mendonca
+
+# Explicação do Sistema
+O sistema desenvolvido consiste na implementação de uma urna eletrônica no qual há 2 tipos de usuário: os eleitores e o administrador responsável pelo gerenciamento da eleição. O eleitor é capaz de votar em 2 senadores e 1 presidente, podendo votar inclusive branco ou nulo, porém apenas uma vez durante a eleição. Para realizar tal tarefa é obrigatório que forneceça seu título.
+O administrador consegue gerenciar a eleição com funções de início, término e visualização das métricas geradas após a votação. Não há um segundo turno e aquele candidato que for mais votado ganha.
+
+# Explicação das tecnologias utilizadas
+- _Java_ com o framework _Spring MVC_ e o template engine _Thymeleaf_
+- Banco de dados _H2_
+- Framework de testes _JUnit_
+- Arquitetura _Model-View-Controller_ (MVC)
+
+
 
 # Read Me First
 The following was discovered as part of building this project:

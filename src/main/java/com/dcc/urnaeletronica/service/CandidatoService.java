@@ -26,44 +26,42 @@ public class CandidatoService {
 		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new Candidato();
 		} else {
-			List<Candidato> candidatosParaPresidente = this.candidatoDao.findAll().stream()
-					.filter(c -> c.getCargo().equals(Cargo.PRESIDENTE)).collect(Collectors.toList());
-			Candidato presidente = candidatosParaPresidente.get(0);
-			for (Candidato candidato : candidatosParaPresidente) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(presidente, eleicao)) {
-					presidente = candidato;
-				}
-			}
-			return presidente;
+			List<Candidato> candidatosParaPresidente = this.listarCandidatosPorCargo(Cargo.PRESIDENTE);
+
+			return this.calcularGanhadorEleicao(candidatosParaPresidente, eleicao);
 		}
+	}
+
+	public List<Candidato> listarCandidatosPorCargo(Cargo cargo) {
+		List<Candidato> candidatosPorCargo = this.buscarTodos().stream().filter(c -> c.getCargo().equals(cargo)).collect(Collectors.toList());
+
+		return candidatosPorCargo;
+	}
+	
+	private Candidato calcularGanhadorEleicao(List<Candidato> candidatos, Eleicao eleicao) {
+		Candidato candidatoGanhador = candidatos.get(0);
+		for (Candidato candidatoConcorrente : candidatos) {
+			if (this.votoService.retornaNumVotosCandidato(candidatoConcorrente, eleicao) > 
+				this.votoService.retornaNumVotosCandidato(candidatoGanhador, eleicao)) {
+				candidatoGanhador = candidatoConcorrente;
+			}
+		}
+		return candidatoGanhador;
 	}
 
 	public List<Candidato> retornaSenadoresEleitos(Eleicao eleicao) {
 		if (!this.votoService.alguemVotou(eleicao.getId())) {
 			return new ArrayList<Candidato>();
 		} else {
-			List<Candidato> candidatosParaSenador = this.candidatoDao.findAll().stream()
-					.filter(c -> c.getCargo().equals(Cargo.SENADOR)).collect(Collectors.toList());
+			List<Candidato> candidatosParaSenador = this.listarCandidatosPorCargo(Cargo.SENADOR);
 
-			Candidato primeiroSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(primeiroSenador, eleicao)) {
-					primeiroSenador = candidato;
-				}
-			}
+			Candidato primeiroSenador = this.calcularGanhadorEleicao(candidatosParaSenador, eleicao);
 
 			int indicePrimeiroSenador = candidatosParaSenador.indexOf(primeiroSenador);
 			candidatosParaSenador.remove(indicePrimeiroSenador);
 
-			Candidato segundoSenador = candidatosParaSenador.get(0);
-			for (Candidato candidato : candidatosParaSenador) {
-				if (this.votoService.retornaNumVotosCandidato(candidato, eleicao) > this.votoService
-						.retornaNumVotosCandidato(segundoSenador, eleicao)) {
-					segundoSenador = candidato;
-				}
-			}
+			Candidato segundoSenador = this.calcularGanhadorEleicao(candidatosParaSenador, eleicao);
+
 			return Arrays.asList(primeiroSenador, segundoSenador);
 		}
 	}

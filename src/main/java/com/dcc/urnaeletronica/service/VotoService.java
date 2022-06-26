@@ -46,47 +46,33 @@ public class VotoService {
 				.filter(v -> v.getCandidato().equals(candidato)).count());
 	}
 
-	public void atribuiVotos(Eleicao eleicaoAtiva, Candidato primeiroSenador, Candidato segundoSenador,
-			Candidato presidente, boolean votoPrimeiroSenadorBranco, boolean votoSegundoSenadorBranco,
-			boolean votoPresidenteBranco) {
-		Voto primeiroVoto = new Voto();
+	public void atribuiVotos(Eleicao eleicaoAtiva, Candidato primeiroSenador, Candidato segundoSenador, 
+							Candidato presidente, boolean votoPrimeiroSenadorBranco, 
+							boolean votoSegundoSenadorBranco, boolean votoPresidenteBranco) {
 
-		if (votoPrimeiroSenadorBranco) {
-			primeiroVoto.setCandidato(null);
-			primeiroVoto.setTipoVoto(TipoVoto.BRANCO);
-		} else {
-			primeiroVoto.setCandidato(
-					primeiroSenador != null ? this.candidatoDao.findByNumero(primeiroSenador.getNumero()) : null);
-			primeiroVoto.setTipoVoto(primeiroSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
-		}
+		Voto primeiroVoto = this.configurarVoto(eleicaoAtiva, primeiroSenador, votoPrimeiroSenadorBranco);
 
-		primeiroVoto.setEleicao(eleicaoAtiva);
+		Voto segundoVoto = this.configurarVoto(eleicaoAtiva, segundoSenador, votoSegundoSenadorBranco);
 
-		Voto segundoVoto = new Voto();
+		Voto terceiroVoto = this.configurarVoto(eleicaoAtiva, presidente, votoPresidenteBranco);
 
-		if (votoSegundoSenadorBranco) {
-			segundoVoto.setCandidato(null);
-			segundoVoto.setTipoVoto(TipoVoto.BRANCO);
-		} else {
-			segundoVoto.setCandidato(
-					segundoSenador != null ? this.candidatoDao.findByNumero(segundoSenador.getNumero()) : null);
-			segundoVoto.setTipoVoto(segundoSenador != null ? TipoVoto.VALIDO : TipoVoto.NULO);
-		}
-
-		segundoVoto.setEleicao(eleicaoAtiva);
-
-		Voto terceiroVoto = new Voto();
-
-		if (votoPresidenteBranco) {
-			terceiroVoto.setCandidato(null);
-			terceiroVoto.setTipoVoto(TipoVoto.BRANCO);
-		} else {
-			terceiroVoto
-					.setCandidato(presidente != null ? this.candidatoDao.findByNumero(presidente.getNumero()) : null);
-			terceiroVoto.setTipoVoto(presidente != null ? TipoVoto.VALIDO : TipoVoto.NULO);
-		}
-		terceiroVoto.setEleicao(eleicaoAtiva);
 		this.votoDao.saveAll(Arrays.asList(primeiroVoto, segundoVoto, terceiroVoto));
+	}
+	
+	private Voto configurarVoto(Eleicao eleicaoAtiva, Candidato candidato, boolean votoBranco) {
+		Voto voto = new Voto();
+
+		if (votoBranco) {
+			voto.setCandidato(null);
+			voto.setTipoVoto(TipoVoto.BRANCO);
+		} else {
+			voto.setCandidato(candidato != null ? this.candidatoDao.findByNumero(candidato.getNumero()) : null);
+			voto.setTipoVoto(candidato != null ? TipoVoto.VALIDO : TipoVoto.NULO);
+		}
+
+		voto.setEleicao(eleicaoAtiva);
+
+		return voto;
 	}
 
 	public List<Voto> buscarTodos() {
