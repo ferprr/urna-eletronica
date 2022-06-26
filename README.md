@@ -1,3 +1,5 @@
+![Coverage](.github/badges/jacoco.svg)
+
 # Integrantes
 * Euller Saez Lage Silva
 * Fernanda Carolina da Silva Pereira
