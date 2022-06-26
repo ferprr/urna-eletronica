@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -38,12 +38,12 @@ jobs:
         with:
           name: jacoco-report
           path: target/site/jacoco/ 
-  build-windows:
+  build-win-macos:
     name: 'Build & Test'
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
