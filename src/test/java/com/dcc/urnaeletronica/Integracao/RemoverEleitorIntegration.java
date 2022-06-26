@@ -1,7 +1,6 @@
 package com.dcc.urnaeletronica.Integracao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -19,10 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.dcc.urnaeletronica.dao.DaoEleitor;
-import com.dcc.urnaeletronica.exceptions.EleicaoServiceException;
 import com.dcc.urnaeletronica.exceptions.EleitorServiceException;
 import com.dcc.urnaeletronica.model.Administrador;
-import com.dcc.urnaeletronica.model.Eleicao;
 import com.dcc.urnaeletronica.model.Eleitor;
 import com.dcc.urnaeletronica.service.EleitorService;
 
@@ -53,40 +50,39 @@ public class RemoverEleitorIntegration {
 		when(this.daoEleitor.findByTituloEleitor(anyString())).thenReturn(Optional.of(eleitor));
 		when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
 		when(this.daoEleitor.getById(anyLong())).thenReturn(null);
-		
+
 		doNothing().when(this.daoEleitor).deleteById(anyLong());
-		
-		//Fazendo login como usuário eleitor que não votou
+
+		// Fazendo login como usuário eleitor que não votou
 		Eleitor eleitorResponse = null;
 		try {
 			eleitorResponse = this.eleitorService.autenticar("0000000001");
-		} catch(EleitorServiceException ex) {
-			
+		} catch (EleitorServiceException ex) {
+
 		}
-        
+
 		assertEquals(eleitor.getVotou(), eleitorResponse.getVotou());
-		
-		
-		//Realizando votação pelo eleitor e verificando que foi registrado
+
+		// Realizando votação pelo eleitor e verificando que foi registrado
 		when(this.daoEleitor.findByTituloEleitor(anyString())).thenReturn(Optional.of(eleitor));
-        when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
+		when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
 
-        try {
-        	this.eleitorService.marcaQueVotou(anyString());
-        } catch(EleitorServiceException ex) {
-        	
-        }
-        
-        assertEquals(true, eleitor.getVotou());
-        
-        //Removendo eleitor e verificando que não é encontrado
-        this.eleitorService.remover(1L);
+		try {
+			this.eleitorService.marcaQueVotou(anyString());
+		} catch (EleitorServiceException ex) {
 
-        verify(this.daoEleitor, times(1)).deleteById(anyLong());
-		
+		}
+
+		assertEquals(true, eleitor.getVotou());
+
+		// Removendo eleitor e verificando que não é encontrado
+		this.eleitorService.remover(1L);
+
+		verify(this.daoEleitor, times(1)).deleteById(anyLong());
+
 		Eleitor eBuscado = eleitorService.buscarPeloId(anyLong());
-		
+
 		assertEquals(null, eBuscado);
-        
+
 	}
 }

@@ -45,28 +45,27 @@ public class EleitorDeveSerCapazDeVotarIntegration {
 	public void eleitorDeveSerCapazDeVotarIntegration() {
 		when(this.daoEleitor.findByTituloEleitor(anyString())).thenReturn(Optional.of(eleitor));
 		when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
-		
-		//Fazendo login como usuário eleitor que não votou
+
+		// Fazendo login como usuário eleitor que não votou
 		Eleitor eleitorResponse = null;
 		try {
 			eleitorResponse = this.eleitorService.autenticar("0000000001");
-		} catch(EleitorServiceException ex) {
-			
-		}
-        
-		assertEquals(eleitor.getVotou(), eleitorResponse.getVotou());
-		
-		
-		//Realizando votação pelo eleitor e verificando que foi registrado
-		when(this.daoEleitor.findByTituloEleitor(anyString())).thenReturn(Optional.of(eleitor));
-        when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
+		} catch (EleitorServiceException ex) {
 
-        try {
-        	this.eleitorService.marcaQueVotou(anyString());
-        } catch(EleitorServiceException ex) {
-        	
-        }
-        
-        assertEquals(true, eleitor.getVotou());
+		}
+
+		assertEquals(eleitor.getVotou(), eleitorResponse.getVotou());
+
+		// Realizando votação pelo eleitor e verificando que foi registrado
+		when(this.daoEleitor.findByTituloEleitor(anyString())).thenReturn(Optional.of(eleitor));
+		when(this.daoEleitor.save(any(Eleitor.class))).thenReturn(eleitor);
+
+		try {
+			this.eleitorService.marcaQueVotou(anyString());
+		} catch (EleitorServiceException ex) {
+
+		}
+
+		assertEquals(true, eleitor.getVotou());
 	}
 }
